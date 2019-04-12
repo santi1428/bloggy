@@ -70,6 +70,7 @@ export default {
         border: 1px solid#abbdbe;
         border-radius: 8px;
         text-align: justify;
+        transition: 0.3s;
     }
 
     .box:hover{
@@ -86,13 +87,14 @@ export default {
         padding: 10px 27px;       
         border-radius: 15px;
         font-size: 1.1rem;
+        transition: 0.3s;
     }
 
     #boton-publicaciones:hover{
-        transition: 0.3s;
         background: #285154;
         color: #e5e5e5;
-        font-size: 18.6px;
+        font-size: 18px;
+        transition: 0.3s;
     }
 
 </style>

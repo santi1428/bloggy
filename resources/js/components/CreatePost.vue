@@ -13,12 +13,9 @@
 </template>
 
 <script>
-    // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-    // import BuildBalloon from '@ckeditor/ckeditor5-build-balloon';
-    // import BalloonBlock from '@ckeditor/ckeditor5-build-balloon-block';
-    // import BuildInline from '@ckeditor/ckeditor5-build-inline';
     import CKEditor from '@ckeditor/ckeditor5-vue';
     import BuildDocument from '@ckeditor/ckeditor5-build-decoupled-document';
+    
     import { mapActions } from 'vuex';
     export default {
         name: 'CreatePost',
@@ -54,6 +51,7 @@
 </script>
 
 <style>
+
 .ck-editor__editable {
     height: 70vh;
 }

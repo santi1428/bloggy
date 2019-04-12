@@ -8,8 +8,11 @@ use Illuminate\Auth\Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
 
+
 class User extends Model implements AuthenticatableContract
 {
     use Authenticatable, HasApiTokens;
+
+
 
 }

@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container" id="contenedor">
  <title>Publicaciones</title>
  <div v-if="loggedIn" class="row justify-content-end mt-4 mb-3">
      <div class="col-sm-8 col-md-6 col-lg-3">
@@ -16,22 +16,31 @@
             </div>
      </div>
  </div>
- <div  v-for="post in getPosts" :key="post.body" class="row">
-     <div class="col-12">
-         <div class="box">
-                <div class="row">
-                    <div class="col-auto"><i class="fas fa-user-circle text-primary fa-3x"></i></div>
-                    <div class="col-auto">
-                    <p class="nombre">{{ post.name }}</p>
-                    <small>{{ post.date }}</small></div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col" v-html="post.body">
+ <div v-for="post in getPosts" :key="post.body" class="box">
+        <div class="row post">
+            <div class="col-12">
+                    <div class="row">
+                        <div class="col-auto"><i class="fas fa-user-circle text-primary fa-3x"></i></div>
+                        <div class="col-auto">
+                        <p class="nombre">{{ post.name }}</p>
+                        <small>{{ post.date }}</small></div>
+                        <div class="col d-flex flex-column">
+                             <a href="#" class="text-primary align-self-end"><i class="fas fa-bars"></i></a>
+                        </div>
                     </div>
-                </div> 
-         </div>
-     </div>
+                    <div class="row mt-2">
+                        <div class="col post-body" v-html="post.body">
+                        </div>
+                    </div> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 contenedor-link">
+                <a href="#" class="link-publicacion">Ir a la publicacion</a>
+            </div>
+        </div>
  </div>
+
 </div>
 </template>
 
@@ -57,10 +66,10 @@ export default {
         padding: 10px 27px;       
         border-radius: 6px;
         font-size: 1rem;
-        font-weight: 50;
+        transition: 0.2s;
     }
 
-      #boton-crear:hover{
+    #boton-crear:hover{
         transition: 0.3s;
         background:#2c9a5b;
         color: #e5e5e5;
@@ -71,18 +80,52 @@ export default {
         margin: 0px;
     }
 
-    #contenedor{
-        height: 92vh;
-        background: red;
+    #contenedor {
+         overflow-wrap: break-word;
     }
+
     .box{
         border: 1px dotted#ccd7d8;
+        height:100%;
         border-radius: 10px;
         padding-top: 10px;
         padding-right: 25px;
         padding-left: 25px;
         margin-bottom: 10px;
+
     }
 
-  
+    .box:hover{
+        transition: 0.3s;
+        border: 1px solid #b7c1c2;
+    }
+
+    .post{
+            display: block;
+            max-height: 40vh;
+            overflow: hidden;
+    }
+
+    .contenedor-link{
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+
+    .link-publicacion{
+        display: block;
+        text-align: center;
+        padding: 6px 0px;
+        text-decoration: none;
+        background: #2d5b5e;
+        border-radius: 5px;
+        color: #ffff;
+        transition: 0.2s;
+    }
+
+    .link-publicacion:hover{
+        transition:  0.2s;
+        background:#285154;
+        color: #e5e5e5;
+    }
 </style>

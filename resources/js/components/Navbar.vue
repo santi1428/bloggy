@@ -34,6 +34,13 @@ export default {
    background: #5C6166;
  }
 
+ .nav-item{
+     transition: 0.3s;
+ }
+
+ .navbar-brand{
+     transition: 0.3s;
+ }
  .nav-item:hover{
       transition: 0.3s;
       font-size: 14.7px;
