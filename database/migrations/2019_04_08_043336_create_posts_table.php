@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
             $table->integer('id')->autoIncrement();
             $table->longText('body');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            // $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
             
         });

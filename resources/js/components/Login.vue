@@ -63,6 +63,7 @@ export default {
                 if(res.status === 200){
                     this.configurarToken(res.data.access_token).then(
                         () => {
+                            axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.access_token}`;
                             this.$router.push({name:"Posts"});
                         }
                     )   

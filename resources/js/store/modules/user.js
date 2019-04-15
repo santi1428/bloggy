@@ -36,7 +36,6 @@ const actions = {
     },
     removerToken({ commit }){
         if(this.getters.loggedIn){
-            axios.defaults.headers.common['Authorization'] = `Bearer ${this.getters.getToken}`;
             return new Promise((resolve, reject) => {
                 axios.post("/logout").then(() => {
                     commit('destruirToken');

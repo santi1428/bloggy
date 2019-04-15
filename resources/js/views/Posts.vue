@@ -16,14 +16,14 @@
             </div>
      </div>
  </div>
- <div v-for="post in getPosts" :key="post.body" class="box">
+ <div v-for="post in getPosts" :key="post.id" class="box">
         <div class="row post">
             <div class="col-12">
                     <div class="row">
                         <div class="col-auto"><i class="fas fa-user-circle text-primary fa-3x"></i></div>
                         <div class="col-auto">
-                        <p class="nombre">{{ post.name }}</p>
-                        <small>{{ post.date }}</small></div>
+                        <p class="nombre">{{ post.user.name }}</p>
+                        <small>{{ post.created_at }}</small></div>
                         <div class="col d-flex flex-column">
                              <a href="#" class="text-primary align-self-end"><i class="fas fa-bars"></i></a>
                         </div>
@@ -46,6 +46,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
     name: "Posts",
@@ -53,6 +54,16 @@ export default {
         return {
             numero: 10 
         }
+    },
+    methods:{
+        ...mapActions(['traerPublicaciones'])
+    },
+    created(){
+        this.traerPublicaciones()
+        .then(() => {
+            console.log("Todo salio bien");
+        })
+        .catch(err => console.log(err));
     },
     computed: mapGetters(["loggedIn", "getPosts"])
 }
