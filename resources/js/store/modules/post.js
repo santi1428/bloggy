@@ -11,6 +11,9 @@ const getters = {
 const mutations = {
     asignarPublicaciones(state, publicaciones){
         state.posts = publicaciones;
+    },
+    removerPublicacion(state, id){
+        state.posts = state.posts.filter(post => post.id !== id);   
     }
 };
 
@@ -42,6 +45,23 @@ const actions = {
             .catch(err => {
                 reject(err);
             });
+        });
+    },
+    eliminarPublicacion({ commit }, id){
+        return new Promise((resolve, reject) => {          
+                axios.delete(`/api/posts/${id}`)
+                .then(res => {
+                    if(res.status === 200){
+                        setTimeout(() => {
+                                    $('#myModal').modal('hide');
+                                    commit("removerPublicacion", id)             
+                                   }, 1500);                       
+                        resolve(res);
+                    }
+                })
+                .catch(err => {
+                    reject(err);
+                });
         });
     }
 };

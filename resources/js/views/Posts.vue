@@ -23,10 +23,8 @@
                         <div class="col-auto"><i class="fas fa-user-circle text-primary fa-3x"></i></div>
                         <div class="col-auto">
                         <p class="nombre">{{ post.user.name }}</p>
-                        <small>{{ post.created_at }}</small></div>
-                        <div class="col d-flex flex-column">
-                             <a href="#" class="text-primary align-self-end"><i class="fas fa-bars"></i></a>
-                        </div>
+                        <small>Publicado el {{ post.created_at }}</small></div>
+                        <options v-bind:post-id="post.id"></options>
                     </div>
                     <div class="row mt-2">
                         <div class="col post-body" v-html="post.body">
@@ -36,7 +34,7 @@
         </div>
         <div class="row">
             <div class="col-12 contenedor-link">
-                <a href="#" class="link-publicacion">Ir a la publicacion</a>
+                <a href="#" class="link-publicacion"><i class="fas fa-reply mr-2 text-dark"></i>Ir a la publicación</a>
             </div>
         </div>
  </div>
@@ -45,15 +43,14 @@
 </template>
 
 <script>
+import Option from '../components/Option';
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 
 export default {
     name: "Posts",
-    data(){
-        return {
-            numero: 10 
-        }
+    components: {
+        'options': Option
     },
     methods:{
         ...mapActions(['traerPublicaciones'])
@@ -69,7 +66,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
     #boton-crear{
         text-decoration: none;
         color: #ffff;
@@ -108,12 +105,13 @@ export default {
 
     .box:hover{
         transition: 0.3s;
-        border: 1px solid #b7c1c2;
+        border: 1px solid #c9d1d2;
     }
 
     .post{
             display: block;
-            max-height: 40vh;
+            min-height: 24vh;
+            max-height: 90vh;
             overflow: hidden;
     }
 
@@ -138,5 +136,11 @@ export default {
         transition:  0.2s;
         background:#285154;
         color: #e5e5e5;
+        text-decoration: none;
+    }
+
+    .fa-reply{
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
     }
 </style>

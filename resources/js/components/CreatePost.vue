@@ -2,7 +2,7 @@
         <div class="container">
             <title>Crear publicación</title>
                 <div class="row mt-4 justify-content-center">
-                    <div class="col-10">
+                    <div class="col-lg-12">
                       <form @submit.prevent="publicar">
                         <ckeditor :editor="editor" @ready="onReady" v-model="postData"></ckeditor>
                         <button class="btn btn-dark btn-block mt-2" type="submit" :disabled="button === 1"><span v-if="button === 1" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>  <span v-if="button === 0"><i class="fas fa-pen-alt mr-2"></i>Crear publicación</span><span v-else>Creando publicación...</span></button>>

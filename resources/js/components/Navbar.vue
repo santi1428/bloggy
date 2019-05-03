@@ -43,7 +43,7 @@ export default {
  }
  .nav-item:hover{
       transition: 0.3s;
-      font-size: 14.7px;
+      font-size: 14.6px;
   } 
 
   .navbar-brand:hover{

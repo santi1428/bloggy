@@ -15,21 +15,21 @@
                         </div>
                     </div>
                     <div class="row justify-content-around">
-                        <div class="col-3 text-center box pt-3 px-4">
+                        <div class="col-3 text-center box pt-3 px-4 animated zoomIn">
                             <i class="fas fa-pencil-alt fa-7x text-success"></i>
                             <h3 class="mt-3">Publicar y compartir tus experiencias</h3>
                             <p>
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, aliquid.
                             </p>
                         </div>
-                        <div class="col-3 text-center box pt-3 px-4">
+                        <div class="col-3 text-center box pt-3 px-4 animated zoomIn">
                             <i class="fas fa-thumbs-up fa-7x text-primary"></i>
                             <h3 class="mt-3">Dar like a tus publicaciones favoritas</h3>
                             <p>
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, aliquid.
                             </p>
                         </div>
-                        <div class="col-3 text-center box pt-3 px-4">
+                        <div class="col-3 text-center box pt-3 px-4 animated zoomIn">
                             <i class="fas fa-comments fa-7x text-info"></i>
                             <h3 class="mt-3">Comentar tus opiniones en los comentarios</h3>
                             <p>

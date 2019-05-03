@@ -62,8 +62,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($post, Request $request)
     {
-        //
+        $user = User::find($request->user()->id);
+        $post = $user->posts->find($post);
+        $post->delete();
+        return response()->json(["message" => "Se ha eliminado la publicación con éxito!"], 200);       
     }
 }
