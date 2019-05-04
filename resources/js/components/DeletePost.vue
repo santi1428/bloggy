@@ -24,7 +24,7 @@
                                     <span v-if="button === 3"><i class="fas fa-check-circle mr-1"></i>Publicacion eliminada</span>
                                 </button>
                             </div>
-                            <div class="col" v-if="button===0"><button class="btn btn-block btn-primary" @click="cerrarModal"><i class="fas fa-arrow-left mr-2"></i>No, cancelar</button></div>
+                            <div class="col" v-if="button===0"><button class="btn btn-block btn-dark" @click="cerrarModal"><i class="fas fa-arrow-left mr-2"></i>No, cancelar</button></div>
                         </div>
                 </div>
             </div>

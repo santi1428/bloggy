@@ -24,7 +24,7 @@
                         <div class="col-auto">
                         <p class="nombre">{{ post.user.name }}</p>
                         <small>Publicado el {{ post.created_at }}</small></div>
-                        <options v-bind:post-id="post.id"></options>
+                        <options v-if="post.user_id === parseInt(getUserId)" v-bind:post-id="post.id"></options>
                     </div>
                     <div class="row mt-2">
                         <div class="col post-body" v-html="post.body">
@@ -62,7 +62,7 @@ export default {
         })
         .catch(err => console.log(err));
     },
-    computed: mapGetters(["loggedIn", "getPosts"])
+    computed: mapGetters(["loggedIn", "getPosts", "getUserId"])
 }
 </script>
 

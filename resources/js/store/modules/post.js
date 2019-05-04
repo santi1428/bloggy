@@ -55,7 +55,7 @@ const actions = {
                         setTimeout(() => {
                                     $('#myModal').modal('hide');
                                     commit("removerPublicacion", id)             
-                                   }, 1500);                       
+                                   }, 1050);                       
                         resolve(res);
                     }
                 })

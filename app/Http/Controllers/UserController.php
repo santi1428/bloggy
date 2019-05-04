@@ -15,11 +15,13 @@ class UserController extends Controller
         $credentials = ["email" => $email, "password" => $password];
         if (Auth::attempt($credentials)) {
             $user = $request->user();
+            $user_id = $request->user()->id;
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->token;
             $token->save();
             return response()->json([
-                'access_token' => $tokenResult->accessToken
+                'access_token' => $tokenResult->accessToken,
+                'user_id' => $user_id
             ]);
         }else{
             return response()->json([

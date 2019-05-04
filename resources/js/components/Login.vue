@@ -61,7 +61,7 @@ export default {
             try{
                 const res = await axios.post("/login", this.campos);
                 if(res.status === 200){
-                    this.configurarToken(res.data.access_token).then(
+                    this.configurarUsuario(res.data).then(
                         () => {
                             axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.access_token}`;
                             this.$router.push({name:"Posts"});
@@ -76,7 +76,7 @@ export default {
             }
             this.button = 0;
         },
-        ...mapActions(['configurarToken'])
+        ...mapActions(['configurarUsuario'])
     },
     computed: {
         verificarCorreo() {
