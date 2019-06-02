@@ -2,12 +2,12 @@
 <div class="container" id="contenedor">
  <title>Publicaciones</title>
  <div v-if="loggedIn" class="row justify-content-end mt-4 mb-3">
-     <div class="col-sm-8 col-md-6 col-lg-3">
+     <div class="col-12 col-sm-6 col-lg-3">
             <router-link :to="{name: 'CreatePost'}" id="boton-crear"><i class="fas fa-pen-alt mr-2"></i>Crear publicación</router-link>
      </div>
  </div>
   <div v-else class="row justify-content-center mt-4 mb-3">
-     <div class="col-sm-5">
+     <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
             <div class="alert alert-info" role="alert">
                 <router-link :to="{name: 'Login'}" class="alert-link">Inicia sesión </router-link> o <router-link :to="{name: 'Register'}" class="alert-link">registrate </router-link>si no tienes cuenta para publicar 
                       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -16,28 +16,58 @@
             </div>
      </div>
  </div>
- <div v-for="post in getPosts" :key="post.id" class="box">
-        <div class="row post">
-            <div class="col-12">
-                    <div class="row">
-                        <div class="col-auto"><i class="fas fa-user-circle text-primary fa-3x"></i></div>
-                        <div class="col-auto">
-                        <p class="nombre">{{ post.user.name }}</p>
-                        <small>Publicado el {{ post.created_at }}</small></div>
-                        <options v-if="post.user_id === parseInt(getUserId)" v-bind:post-id="post.id"></options>
+
+ <div v-if="getPosts!==null">
+    <div v-if="getPosts.length!==0">
+        <div v-for="post in getPosts" :key="post.id" class="box">
+                <div class="row post">
+                    <div class="col-12 encabezado-publicacion">
+                            <div class="row">
+                                <div class="col-auto"><i class="fas fa-user-circle text-primary fa-3x"></i></div>
+                                <div class="col-auto">
+                                    <p class="nombre">{{ post.user.name }}</p>
+                                    <small>Publicado el {{ post.created_at }}</small>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col post-body" v-html="post.body">
+                                </div>
+                            </div> 
+                    <options class="options" v-if="post.user_id === parseInt(getUserId)"></options>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col post-body" v-html="post.body">
-                        </div>
-                    </div> 
+                </div>
+                <div class="row">
+                    <div class="col-12 contenedor-link">
+                        <a href="#" class="link-publicacion"><i class="fas fa-reply mr-2 text-dark"></i>Ir a la publicación</a>
+                    </div>
+                </div>
+                <deletepost v-if="getMostrarModalEliminar" v-bind:id="post.id"></deletepost>
+        </div>
+        <div class="row my-5" v-if="mostrarCargandoPublicaciones">
+            <div class="col">
+                <h5 class="text-dark text-center" id="cargando">
+                        <i class="fa fa-spinner fa-pulse fa-fw mr-1"></i>Cargando publicaciones
+                </h5>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12 contenedor-link">
-                <a href="#" class="link-publicacion"><i class="fas fa-reply mr-2 text-dark"></i>Ir a la publicación</a>
+    </div>
+    <div v-else>
+        <div class="row mt-5">
+            <div class="col-md-6 mx-auto">
+                <h3 class="text-dark">No hay publicaciones. Se el primero en publicar!</h3>
             </div>
         </div>
- </div>
+    </div>
+</div>
+ <div v-else>
+        <div class="row mt-5">
+            <div class="col">
+                <h5 class="text-dark text-center">
+                  <i class="fa fa-spinner fa-pulse fa-fw mr-2"></i>Cargando publicaciones
+               </h5>
+            </div>
+        </div>
+</div>
 
 </div>
 </template>
@@ -46,23 +76,54 @@
 import Option from '../components/Option';
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
-
+import { mapMutations } from 'vuex';
+import DeletePost from '../components/DeletePost';
 export default {
     name: "Posts",
     components: {
-        'options': Option
+        'options': Option,
+        'deletepost': DeletePost
+    },
+    data(){
+        return {
+            mostrarCargandoPublicaciones: false
+        }
     },
     methods:{
-        ...mapActions(['traerPublicaciones'])
+        ...mapActions(['traerPublicaciones']),
+        traerPublicacionesConScroll(){
+            let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
+                    if (bottomOfWindow) {
+                                if(this.mostrarCargandoPublicaciones === false){                       
+                                        this.mostrarCargandoPublicaciones = true;
+                                        this.traerPublicaciones()
+                                        .then(() => {
+                                            this.mostrarCargandoPublicaciones = false;
+                                        })
+                                        .catch(() => {
+                                            this.mostrarCargandoPublicaciones = false;
+                                        });
+                                }
+                          
+                    }
+        },
+        ...mapMutations(["resetearPaginacion"])
     },
     created(){
+        this.resetearPaginacion();
         this.traerPublicaciones()
         .then(() => {
             console.log("Todo salio bien");
         })
         .catch(err => console.log(err));
     },
-    computed: mapGetters(["loggedIn", "getPosts", "getUserId"])
+    computed: mapGetters(["loggedIn", "getPosts", "getUserId", "getMostrarModalEliminar"]),
+    mounted(){
+        document.addEventListener("scroll", this.traerPublicacionesConScroll);
+    },
+    beforeDestroy(){
+        document.removeEventListener('scroll', this.traerPublicacionesConScroll);
+    }
 }
 </script>
 
@@ -143,4 +204,17 @@ export default {
         -webkit-transform: scaleX(-1);
         transform: scaleX(-1);
     }
+
+    #cargando{
+        font-size: 1rem;
+    }
+
+    .options{
+        position: absolute;
+        top: 0%;
+        right: 2%;
+        width: 100%;
+        z-index: 1;
+    }
+
 </style>

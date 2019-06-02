@@ -2,7 +2,7 @@
 <div class="container">
 <title>Inicio de Sesión</title>
 <div class="row justify-content-center formulario">
-    <div class="col-md-4 mt-5 my-auto">
+    <div class="col-11 col-sm-8 col-md-6 col-lg-4 mt-5 my-auto">
             <div class="row" v-if="errorLogin">
                 <div class="col">
                     <div class="alert alert-danger text-center" role="alert">

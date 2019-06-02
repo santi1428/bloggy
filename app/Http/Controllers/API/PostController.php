@@ -13,7 +13,7 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-        return response()->json(Post::select('id', 'body', 'created_at', 'user_id')->orderBy('created_at', "desc")->with('user:id,name,email')->get(), 200);
+        return response()->json(Post::select('id', 'body', 'created_at', 'user_id')->orderBy('created_at', "desc")->with('user:id,name,email')->paginate(5), 200);
     }
 
     /**

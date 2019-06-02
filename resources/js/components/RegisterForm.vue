@@ -2,7 +2,7 @@
 <div class="container">
 <title>Registro</title>
 <div class="row justify-content-center">
-    <div class="col-md-4">
+    <div class="col-11 col-sm-8 col-md-6 col-lg-5">
     <form class="card card-body mt-5" @submit.prevent="submit">
         <div class="form-group">
             <label for="nombre">Nombre</label>
