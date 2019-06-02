@@ -59,9 +59,9 @@ export default {
                     this.mostrarModal = false;
                     try{
                         const res = await axios.post("/register", this.campos);
-                        this.asignarModal(true, "Registro exitoso!", "Te has registrado en la plataforma exitosamente");
+                        this.asignarModal(true, "", "Te has registrado en la plataforma exitosamente, ahora puedes iniciar sesion.");
                     }catch(err){
-                        this.asignarModal(false, "No se ha podido completar el registro :(", "Ha ocurrido un error durante el registro");
+                        this.asignarModal(false, "No se ha podido completar el registro :(", "Ha ocurrido un error durante el registro. Por favor vuelve a intentarlo mas tarde.");
                     }                    
                     this.mostrarModal = true;
                 }
