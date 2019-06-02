@@ -9,8 +9,8 @@
                 <router-link :to="{name: 'Posts'}" class="nav-item nav-link py-3 ml-md-5 px-4 active"><i class="fas fa-list-ul mr-2"></i>Publicaciones</router-link>
             </div>
             <div class="navbar-nav ml-auto ">
-                <router-link v-if="!loggedIn" :to="{name: 'Login'}" class="nav-item nav-link py-3 mr-0 mr-md-3 px-4 active"><i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión</router-link>
-                <router-link v-if="!loggedIn" :to="{name: 'Register'}" class="nav-item nav-link py-3 mr-0 mr-md-3 px-4 active"><i class="fas fa-user-plus mr-2"></i>Registrarse</router-link>
+                <router-link v-if="!loggedIn" :to="{name: 'Login'}" class="nav-item nav-link py-3 mr-0 mr-md-3 mr-lg-5 px-4 active"><i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión</router-link>
+                <router-link v-if="!loggedIn" :to="{name: 'Register'}" class="nav-item nav-link py-3 mr-0 mr-md-3 mr-lg-5 px-4 active"><i class="fas fa-user-plus mr-2"></i>Registrarse</router-link>
                 <router-link v-if="loggedIn" :to="{name: 'Logout'}" class="nav-item nav-link py-3 mr-0 mr-md-5 px-4 active"><i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión</router-link>
             </div>
         </div>
