@@ -2,7 +2,7 @@ const state = {
         posts: null,
         page: 1,
         lastPage: 1,
-        mostrarModalEliminar: false
+        mostrarModalEliminarDePostId: ""
 };
 
 const getters = {
@@ -15,8 +15,8 @@ const getters = {
     getLastPage(state){
         return state.lastPage;
     },
-    getMostrarModalEliminar(state){
-        return state.mostrarModalEliminar;
+    getMostrarModalEliminarDePostId(state){
+        return state.mostrarModalEliminarDePostId;
     }
 };
 
@@ -46,11 +46,11 @@ const mutations = {
         state.lastPage = 1;
         state.posts = null;
     },
-    mostrarModalEliminar(state){
-        state.mostrarModalEliminar = true;
+    mostrarModalEliminarDePostId(state, id){
+        state.mostrarModalEliminarDePostId = id;
     },
     ocultarModalEliminar(state){
-        state.mostrarModalEliminar = false;
+        state.mostrarModalEliminarDePostId = "";
     }
 };
 
@@ -97,7 +97,7 @@ const actions = {
                         setTimeout(() => {
                             $('#myModal').modal('hide');
                             commit("removerPublicacion", id);
-                            commit("ocultarModalEliminar", id);
+                            commit("ocultarModalEliminar");
                         }, 1050);                  
                         resolve(res);        
                     }

@@ -33,7 +33,7 @@
                                 <div class="col post-body" v-html="post.body">
                                 </div>
                             </div> 
-                    <options class="options" v-if="post.user_id === parseInt(getUserId)"></options>
+                    <options class="options" v-if="post.user_id === parseInt(getUserId)" v-bind:id="post.id"></options>
                     </div>
                 </div>
                 <div class="row">
@@ -41,7 +41,7 @@
                         <a href="#" class="link-publicacion"><i class="fas fa-reply mr-2 text-dark"></i>Ir a la publicación</a>
                     </div>
                 </div>
-                <deletepost v-if="getMostrarModalEliminar" v-bind:id="post.id"></deletepost>
+                <deletepost v-if="getMostrarModalEliminarDePostId === post.id" v-bind:id="post.id"></deletepost>
         </div>
         <div class="row my-5" v-if="mostrarCargandoPublicaciones">
             <div class="col">
@@ -74,10 +74,10 @@
 
 <script>
 import Option from '../components/Option';
+import DeletePost from '../components/DeletePost';
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
-import DeletePost from '../components/DeletePost';
 export default {
     name: "Posts",
     components: {
@@ -117,7 +117,7 @@ export default {
         })
         .catch(err => console.log(err));
     },
-    computed: mapGetters(["loggedIn", "getPosts", "getUserId", "getMostrarModalEliminar"]),
+    computed: mapGetters(["loggedIn", "getPosts", "getUserId", "getMostrarModalEliminarDePostId"]),
     mounted(){
         document.addEventListener("scroll", this.traerPublicacionesConScroll);
     },
