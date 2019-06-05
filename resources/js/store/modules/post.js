@@ -1,6 +1,6 @@
 const state = {
         posts: null,
-        page: 1,
+        page: 0,
         lastPage: 1,
         mostrarModalEliminarDePostId: ""
 };
@@ -42,7 +42,7 @@ const mutations = {
         state.lastPage = lastPage;
     },
     resetearPaginacion(state){
-        state.page = 1;
+        state.page = 0;
         state.lastPage = 1;
         state.posts = null;
     },

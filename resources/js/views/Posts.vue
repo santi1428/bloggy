@@ -46,7 +46,7 @@
         <div class="row my-5" v-if="mostrarCargandoPublicaciones">
             <div class="col">
                 <h5 class="text-dark text-center" id="cargando">
-                        <i class="fa fa-spinner fa-pulse fa-fw mr-1"></i>Cargando publicaciones
+                        <i class="fa fa-spinner fa-pulse fa-fw mr-1"></i>Cargando publicaciones 
                 </h5>
             </div>
         </div>
@@ -67,6 +67,8 @@
                </h5>
             </div>
         </div>
+</div>
+<div id="infinite-scroll-trigger">
 </div>
 
 </div>
@@ -92,37 +94,35 @@ export default {
     methods:{
         ...mapActions(['traerPublicaciones']),
         traerPublicacionesConScroll(){
-            let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
-                    if (bottomOfWindow) {
-                                if(this.mostrarCargandoPublicaciones === false){                       
-                                        this.mostrarCargandoPublicaciones = true;
-                                        this.traerPublicaciones()
-                                        .then(() => {
-                                            this.mostrarCargandoPublicaciones = false;
-                                        })
-                                        .catch(() => {
-                                            this.mostrarCargandoPublicaciones = false;
-                                        });
-                                }
-                          
-                    }
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if(entry.intersectionRatio > -1){
+                            if(this.mostrarCargandoPublicaciones === false){                       
+                                    this.mostrarCargandoPublicaciones = true;
+                                    this.traerPublicaciones()
+                                    .then(() => {
+                                        this.mostrarCargandoPublicaciones = false;
+                                    })
+                                    .catch(() => {
+                                        this.mostrarCargandoPublicaciones = false;
+                                    });
+                            }
+                        }
+                    })
+                });
+                observer.observe(document.getElementById("infinite-scroll-trigger"));
         },
         ...mapMutations(["resetearPaginacion"])
     },
     created(){
         this.resetearPaginacion();
         this.traerPublicaciones()
-        .then(() => {
-            console.log("Todo salio bien");
-        })
+        .then(() => this.traerPublicacionesConScroll())
         .catch(err => console.log(err));
     },
     computed: mapGetters(["loggedIn", "getPosts", "getUserId", "getMostrarModalEliminarDePostId"]),
     mounted(){
-        document.addEventListener("scroll", this.traerPublicacionesConScroll);
-    },
-    beforeDestroy(){
-        document.removeEventListener('scroll', this.traerPublicacionesConScroll);
+            
     }
 }
 </script>
@@ -217,4 +217,7 @@ export default {
         z-index: 1;
     }
 
+    #infinite-scroll-trigger{
+        height: 1px;
+    }
 </style>
