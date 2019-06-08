@@ -6,26 +6,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\User;
-use Carbon\Carbon;
 
 class UserController extends Controller
 {
-
     public function login(Request $request){
         $email = $request->input("correo");
         $password = $request->input("contrasena");
         $credentials = ["email" => $email, "password" => $password];
         if (Auth::attempt($credentials)) {
             $user = $request->user();
+            $user_id = $request->user()->id;
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->token;
             $token->save();
             return response()->json([
                 'access_token' => $tokenResult->accessToken,
-                'token_type' => 'Bearer',
-                'expires_at' => Carbon::parse(
-                    $tokenResult->token->expires_at
-                )->toDateTimeString()
+                'user_id' => $user_id
             ]);
         }else{
             return response()->json([

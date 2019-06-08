@@ -1,58 +1,79 @@
 const state = {
-    token: localStorage.getItem("access_token") || null
+    token: localStorage.getItem("access_token") || null,
+    user_id: localStorage.getItem("user_id") || null
 };
 
 const getters = {
     getToken: state => state.token,
+    getUserId: state => state.user_id,
     loggedIn(state){
-        if(state.token !== null){
+        if(state.token !== null && state.user_id !== null){
             return true;
         }else{
             return false;
         }
-    }
+    } 
 };
 
 const mutations = {
     asignarToken(state, token) {
-        state.token = token
+        state.token = token;
+    },
+    asignarUsuarioId(state, user_id){
+        state.user_id = user_id;
     },
     destruirToken(state){
         state.token = null;
+    },
+    destruirUsuarioId(state){
+        state.user_id = null;
     }
 };
 
 const actions = {
-    configurarToken({ commit }, token){
+    configurarUsuario({ commit }, data){
         return new Promise((resolve, reject) => {
-            commit('asignarToken', token);
-            localStorage.setItem("access_token", token);
-            if(localStorage.getItem("access_token")!==null){
+            commit('asignarToken', data.access_token);
+            localStorage.setItem("access_token", data.access_token);
+            commit("asignarUsuarioId", data.user_id);
+            localStorage.setItem("user_id", data.user_id);
+            if(localStorage.getItem("access_token")!==null && localStorage.getItem("user_id")!==null){
                 resolve();
             }else{
                 reject();
             }
         });
     },
-    removerToken({ commit }){
+    removerUsuario({ commit, dispatch }){
         if(this.getters.loggedIn){
-            axios.defaults.headers.common['Authorization'] = `Bearer ${this.getters.getToken}`;
             return new Promise((resolve, reject) => {
                 axios.post("/logout").then(() => {
-                    commit('destruirToken');
-                    localStorage.removeItem("access_token");
-                    if(localStorage.getItem("access_token")===null && this.getters.getToken === null){
-                    resolve();
-                }}).catch(err => {
-                    commit('destruirToken');
-                    localStorage.removeItem("access_token");
-                    if(localStorage.getItem("access_token")===null && this.getters.getToken === null){
-                    resolve();
-                    }
+                    if(dispatch("destruirUsuario")){
+                        resolve();
+                    }    
+                }).catch(err => {
+                    if(dispatch("destruirUsuario")){
+                        resolve();
+                    }   
                 });       
             })
         }else{
             reject("You can't log out!");
+        }
+    },
+    destruirUsuario({ commit }){
+        commit('destruirToken');
+        localStorage.removeItem("access_token");
+        commit('destruirUsuarioId');
+        localStorage.removeItem("user_id");
+        if(localStorage.getItem("access_token")===null &&
+           this.getters.getToken===null &&
+           localStorage.getItem("user_id")===null &&
+           this.getters.getUserId===null
+           ){
+            return true;
+        }else{
+            return false;
         }
     }
 };

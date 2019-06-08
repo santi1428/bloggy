@@ -2,7 +2,7 @@
 <div class="container">
 <title>Registro</title>
 <div class="row justify-content-center">
-    <div class="col-md-4">
+    <div class="col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4">
     <form class="card card-body mt-5" @submit.prevent="submit">
         <div class="form-group">
             <label for="nombre">Nombre</label>
@@ -59,9 +59,9 @@ export default {
                     this.mostrarModal = false;
                     try{
                         const res = await axios.post("/register", this.campos);
-                        this.asignarModal(true, "Registro exitoso!", "Te has registrado en la plataforma exitosamente");
+                        this.asignarModal(true, "", "Te has registrado en la plataforma exitosamente, ahora puedes iniciar sesion.");
                     }catch(err){
-                        this.asignarModal(false, "No se ha podido completar el registro :(", "Ha ocurrido un error durante el registro");
+                        this.asignarModal(false, "No se ha podido completar el registro :(", "Ha ocurrido un error durante el registro. Por favor vuelve a intentarlo mas tarde.");
                     }                    
                     this.mostrarModal = true;
                 }

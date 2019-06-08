@@ -1,41 +1,127 @@
 const state = {
-    posts: [
-    {name: 'Santiago', date: "Hace 20 dias", body: `Lorem ipsum dolor sit amet consectetur adipisicing elit. A ullam suscipit esse totam corrupti mollitia ducimus praesentium at. Quod, facilis. Veniam dignissimos consectetur aut provident beatae amet deserunt ab quasi!
-    Ea labore sapiente rem debitis harum. Aspernatur ut simlique aut, tempore eius voluptatibus. Est tempora, repellat exercitationem, aut vel ullam consequuntur rem voluptatibus voluptate eum placeat reiciendis impedit quidem sapiente.
-    Eligendi harum, officia perferendis ex, quidem reiciendis adipisci similique iste porro expedita et eaque. Excepturi odit, aperiam illum commodi odio officia. Voluptatum libero odit dicta nisi similique a? Velit, culpa?
-    Nulla, fuga! Delectus ad ipsam laboriosam tenetur assumenda voluptatum et fugit vitae. Quae, harum quo sit pariatur illo tempora repudiandae doloribus porro molestiae iure natus facilis unde optio vel saepe!
-    Ratione, explicabo! Porro quae explicabo maiores nostrum sit libero officia consectetur aliquam dicta itaque, architecto error amet saepe ea possimus accusantium minima? Harum obcaecati temporibus assumenda provident nisi suscipit quaerat.`},
-    {name: 'Andres', date: "Hace 2 dias", body: `Lorem psum dolor sit amet consectetur adipisicing elit. A ullam suscipit esse totam corrupti mollitia ducimus praesentium at. Quod, facilis. Veniam dignissimos consectetur aut provident beatae amet deserunt ab quasi!
-    Ea labore sapiente rem debitis harum. Aspernatur ut similique aut, tempore eius voluptatibus. Est tempora, repellat exercitationem, aut vel ullam consequuntur rem voluptatibus voluptate eum placeat reiciendis impedit quidem sapiente.
-    Eligendi harum, officia perferendis ex, quidem reiciendis adipisci similique iste porro expedita et eaque. Excepturi odit, aperiam illum commodi odio officia. Voluptatum libero odit dicta nisi similique a? Velit, culpa?
-    Nulla, fuga! Delectus ad ipsam laboriosam tenetur assumenda voluptatum et fugit vitae. Quae, harum quo sit pariatur illo tempora repudiandae doloribus porro molestiae iure natus facilis unde optio vel saepe!
-    Ratione, explicabo! Porro quae explicabo maiores nostrum sit libero officia consectetur aliquam dicta itaque, architecto error amet saepe ea possimus accusantium minima? Harum obcaecati temporibus assumenda provident nisi suscipit quaerat.`},
-    {name: 'Daniel', date: "Hace 3 meses", body: `Lorem ipsum dolor sit amet consectetur adipisicing elit. A ullam suscipit esse totam corrupti mollitia ducimus praesentium at. Quod, facilis. Veniam dignissimos consectetur aut provident beatae amet deserunt ab quasi!
-    Ea labore sapiente rem debitis harum. Aspernaur ut similique aut, tempore eius voluptatibus. Est tempora, repellat exercitationem, aut vel ullam consequuntur rem voluptatibus voluptate eum placeat reiciendis impedit quidem sapiente.
-    Eligendi harum, officia perferendis ex, quidem reiciendis adipisci similique iste porro expedita et eaque. Excepturi odit, aperiam illum commodi odio officia. Voluptatum libero odit dicta nisi similique a? Velit, culpa?
-    Nulla, fuga! Delectus ad ipsam laboriosam tenetur assumenda voluptatum et fugit vitae. Quae, harum quo sit pariatur illo tempora repudiandae doloribus porro molestiae iure natus facilis unde optio vel saepe!
-    Ratione, explicabo! Porro quae explicabo maiores nostrum sit libero officia consectetur aliquam dicta itaque, architecto error amet saepe ea possimus accusantium minima? Harum obcaecati temporibus assumenda provident nisi suscipit quaerat.`}
-]
+        posts: null,
+        page: 0,
+        lastPage: 1,
+        mostrarModalEliminarDePostId: ""
 };
 
 const getters = {
     getPosts(state){
         return state.posts;
+    },
+    getPage(state){
+        return state.page;
+    },
+    getLastPage(state){
+        return state.lastPage;
+    },
+    getMostrarModalEliminarDePostId(state){
+        return state.mostrarModalEliminarDePostId;
     }
 };
 
 const mutations = {
-    agregarPublicacion(state, publicacion){
-        state.posts.push(publicacion);
-    }   
+    agregarPublicaciones(state, publicacionesNuevas){
+        if(state.posts !== null){
+            state.posts = state.posts.concat(publicacionesNuevas);
+        }
+        else{
+            state.posts = publicacionesNuevas;
+        }
+        state.posts.sort(function(a,b){
+            return new Date(b.created_at) - new Date(a.created_at);
+        });
+    },
+    removerPublicacion(state, id){
+        state.posts = state.posts.filter(post => post.id !== id);   
+    },
+    aumentarNumeroPagina(state){
+        state.page++;
+    },
+    asignarUltimaPagina(state, lastPage){
+        state.lastPage = lastPage;
+    },
+    resetearPaginacion(state){
+        state.page = 0;
+        state.lastPage = 1;
+        state.posts = null;
+    },
+    mostrarModalEliminarDePostId(state, id){
+        state.mostrarModalEliminarDePostId = id;
+    },
+    ocultarModalEliminar(state){
+        state.mostrarModalEliminarDePostId = "";
+    }
 };
 
 const actions = {
-    guardarPublicacion({ commit }, publicacion){
+    guardarPublicacion({commit}, publicacion){
             return new Promise((resolve, reject) => {
-                commit("agregarPublicacion", publicacion);
-                resolve();
+                axios.post("/api/posts", publicacion).then(res => {
+                    if(res.status === 200){
+                        resolve();
+                    }else{
+                        reject();
+                    }   
+                })
+                .catch(err => {
+                    reject(err);
+                });
             });
+    },
+    traerPublicaciones({ commit, getters, dispatch }){
+        return new Promise((resolve, reject) => {
+            if(getters.getPage <= getters.getLastPage){
+                console.log("making request");
+                axios.get(`/api/posts?page=${getters.getPage}`).then(res => {
+                    if(res.status === 200){
+                        commit('aumentarNumeroPagina');
+                        commit("asignarUltimaPagina", res.data.last_page);
+                        dispatch('anadirPublicaciones', res.data.data);
+                        resolve();
+                    }
+                })
+                .catch(err => {
+                    reject(err);
+                });
+            }else{
+                resolve();
+            }
+        });
+    },
+    eliminarPublicacion({ commit }, id){
+        return new Promise((resolve, reject) => {          
+                axios.delete(`/api/posts/${id}`)
+                .then(res => {
+                    if(res.status === 200){
+                        setTimeout(() => {
+                            $('#myModal').modal('hide');
+                            commit("removerPublicacion", id);
+                            commit("ocultarModalEliminar");
+                        }, 1050);                  
+                        resolve(res);        
+                    }
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    },
+    anadirPublicaciones({ commit, getters }, publicacionesNuevas){
+                let publicaciones = getters.getPosts;        
+                if(publicaciones !== null){
+                    publicaciones.forEach((publicacion) => {
+                        for(let i=0; i<publicacionesNuevas.length; i++){
+                            if(publicacion.id === publicacionesNuevas[i].id){
+                                publicacionesNuevas.splice(i, 1);
+                                break;
+                            }
+                        }
+                    });
+                    commit("agregarPublicaciones", publicacionesNuevas);                
+                }else{
+                    commit("agregarPublicaciones", publicacionesNuevas);    
+                }               
     }
 };
 

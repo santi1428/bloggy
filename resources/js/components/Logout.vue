@@ -6,9 +6,9 @@
 import { mapActions } from 'vuex';
 export default {
     name: "Logout",
-    methods: mapActions(['removerToken']),
+    methods: mapActions(['removerUsuario']),
     created(){
-        this.removerToken().then(() => {
+        this.removerUsuario().then(() => {
             this.$router.push({path:"/"});
         }).catch(err => console.log(err));
     }
