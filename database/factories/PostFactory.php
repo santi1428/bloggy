@@ -3,9 +3,9 @@
 use Faker\Generator as Faker;
 
 $factory->define(App\Post::class, function (Faker $faker) {
-    $body = $faker->sentence(80);
+    $body = $faker->sentence(400);
     return [
-        'user_id' => rand(2, 4),
+        'user_id' => rand(2, 3),
         'body' => $body
     ];
 });

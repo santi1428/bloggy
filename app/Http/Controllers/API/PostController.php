@@ -41,7 +41,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Post::select('id', 'body', 'created_at', 'user_id')->with('user:id,name,email')->where("id", $id)->get());
     }
 
     /**

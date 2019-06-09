@@ -38,7 +38,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12 contenedor-link">
-                        <a href="#" class="link-publicacion"><i class="fas fa-reply mr-2 text-dark"></i>Ir a la publicación</a>
+                        <router-link :to="{name: 'Post', params: {id: post.id}}" class="link-publicacion"><i class="fas fa-reply mr-2 text-dark"></i>Ir a la publicación</router-link>
                     </div>
                 </div>
                 <deletepost v-if="getMostrarModalEliminarDePostId === post.id" v-bind:id="post.id"></deletepost>

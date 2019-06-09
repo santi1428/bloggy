@@ -25,6 +25,6 @@ Route::group(['middleware' => 'auth:api'], function()
 
 });
 Route::get("/posts", "API\PostController@index")->name("posts.index");
-Route::get("/posts/{post}", "API\PostController@show")->name("posts.show");
+Route::get("/posts/{id}", "API\PostController@show")->name("posts.show");
 
 

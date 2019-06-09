@@ -6,8 +6,7 @@
                             <i class="fas fa-bars"></i></a>
                     </div>
                 </div>
-                <ul v-if="mostrarLista" v-bind:class="{'animated lightSpeedIn': mostrarLista}">
-                    <li><a href="#"><i class="fas fa-reply mr-2 text-dark"></i>Ir a la publicación</a></li>
+                <ul v-if="mostrarLista" v-bind:class="{'animated lightSpeedIn': mostrarLista}" class="shadow">
                     <li><a href="#"><i class="fas fa-edit mr-2 text-success"></i>Editar publicación</a></li>
                     <li @click.prevent="mostrarModalEliminarDePostId(id)"><a href="#"><i class="fas fa-trash-alt mr-2 text-danger"></i>Eliminar publicación</a></li>
                 </ul>

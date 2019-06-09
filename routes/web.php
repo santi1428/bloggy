@@ -18,6 +18,8 @@
 Route::get('/{pages}', "VueController@index")
 ->where('pages', '(|register|login|posts|logout|posts/create)');
 
+Route::get('posts/{id}', "VueController@index");
+
 
 Route::get("/register/{email}", "UserController@verifyEmail");
 Route::post("/register", "UserController@register");

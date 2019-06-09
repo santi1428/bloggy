@@ -6,6 +6,7 @@ import Login from './components/Login';
 import CreatePost from './components/CreatePost';
 import Posts from './views/Posts';
 import Logout from './components/Logout';
+import Post from './views/Post';
 
 Vue.use(VueRouter);
 
@@ -52,6 +53,14 @@ const router = new VueRouter({
             component: CreatePost,
             meta: {
                 requiresAuth: true
+            }
+        },
+        {
+            path: "/posts/:id",
+            name: "Post",
+            component: Post,
+            meta: {
+                requiresAuth: false
             }
         }
     ]

@@ -89,6 +89,15 @@ const actions = {
             }
         });
     },
+    traerPublicacion({ commit }, id){
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/posts/${id}`)
+            .then(post => {
+                resolve(post.data[0]);
+            })
+            .catch(err => reject(err));
+        });
+    },
     eliminarPublicacion({ commit }, id){
         return new Promise((resolve, reject) => {          
                 axios.delete(`/api/posts/${id}`)
@@ -108,20 +117,18 @@ const actions = {
         });
     },
     anadirPublicaciones({ commit, getters }, publicacionesNuevas){
-                let publicaciones = getters.getPosts;        
-                if(publicaciones !== null){
-                    publicaciones.forEach((publicacion) => {
-                        for(let i=0; i<publicacionesNuevas.length; i++){
-                            if(publicacion.id === publicacionesNuevas[i].id){
-                                publicacionesNuevas.splice(i, 1);
-                                break;
-                            }
-                        }
-                    });
-                    commit("agregarPublicaciones", publicacionesNuevas);                
-                }else{
-                    commit("agregarPublicaciones", publicacionesNuevas);    
-                }               
+        let publicaciones = getters.getPosts;        
+        if(publicaciones !== null){
+            publicaciones.forEach((publicacion) => {
+                for(let i=0; i<publicacionesNuevas.length; i++){
+                    if(publicacion.id === publicacionesNuevas[i].id){
+                        publicacionesNuevas.splice(i, 1);
+                        break;
+                    }
+                }
+            });
+        }           
+        commit("agregarPublicaciones", publicacionesNuevas);                
     }
 };
 
