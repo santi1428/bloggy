@@ -57,7 +57,8 @@ const mutations = {
 const actions = {
     guardarPublicacion({commit}, publicacion){
             return new Promise((resolve, reject) => {
-                axios.post("/api/posts", publicacion).then(res => {
+                axios.post("/api/posts", publicacion)
+                .then(res => {
                     if(res.status === 200){
                         resolve();
                     }else{
@@ -114,6 +115,15 @@ const actions = {
                 .catch(err => {
                     reject(err);
                 });
+        });
+    },
+    actualizarPublicacion({ commit }, post){
+        return new Promise((resolve, reject) => {
+            axios.put(`/api/posts/${post.idPost}`, {postData: post.postData})
+            .then(() => {
+                resolve();
+            })
+            .catch(() => reject());
         });
     },
     anadirPublicaciones({ commit, getters }, publicacionesNuevas){

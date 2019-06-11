@@ -9,7 +9,7 @@
                     </h5>
                 </div>
             </div>
-            <div class="row  shadow-sm rounded py-3 mt-2" v-else>
+            <div class="row  shadow-sm rounded py-3 mt-md-2" v-else>
                 <div class="col">
                         <div class="row">
                             <div class="col-auto"><i class="fas fa-user-circle text-primary fa-4x"></i></div>

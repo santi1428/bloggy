@@ -67,7 +67,7 @@ export default {
         color:#616970
     }
     .box{
-        border: 1px solid#abbdbe;
+        border: 1px solid#c8d4d5;
         border-radius: 8px;
         text-align: justify;
         transition: 0.3s;
