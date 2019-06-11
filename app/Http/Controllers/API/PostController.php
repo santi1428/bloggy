@@ -69,4 +69,14 @@ class PostController extends Controller
         $post->delete();
         return response()->json(["message" => "Se ha eliminado la publicación con éxito!"], 200);       
     }
+
+    public function verifyPostOwner($post, Request $request){
+        $user = User::find($request->user()->id);
+        $post = $user->posts->find($post);
+        if($post){
+            return response()->json(["message" => "Es el dueño"], 200);
+        }else{
+            return response()->json(["message" => "No es el dueño"], 401);
+        }
+    }
 }

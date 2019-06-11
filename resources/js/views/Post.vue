@@ -47,6 +47,7 @@ export default {
          this.traerPublicacion(this.$route.params.id)
          .then(post => { 
              this.post = post;
+             console.table(post);
          })
          .catch(err => this.$router.push({name: "Posts"}));
     }

@@ -7,6 +7,7 @@ import CreatePost from './components/CreatePost';
 import Posts from './views/Posts';
 import Logout from './components/Logout';
 import Post from './views/Post';
+import UpdatePost from './components/UpdatePost';
 
 Vue.use(VueRouter);
 
@@ -62,7 +63,15 @@ const router = new VueRouter({
             meta: {
                 requiresAuth: false
             }
-        }
+        },
+        {
+            path: "/posts/update/:id",
+            name: "UpdatePost",
+            component: UpdatePost,
+            meta: {
+                requiresAuth: true
+            }
+        },
     ]
 });
 

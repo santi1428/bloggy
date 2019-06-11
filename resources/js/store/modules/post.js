@@ -129,6 +129,17 @@ const actions = {
             });
         }           
         commit("agregarPublicaciones", publicacionesNuevas);                
+    },
+    verificarPropietario({ commit }, idPost){
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/verifypostowner/${idPost}`)
+            .then(res => {
+                resolve(res);
+            })
+            .catch(err => {
+                reject(err);
+            });
+        });
     }
 };
 

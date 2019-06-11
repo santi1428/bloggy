@@ -17,13 +17,13 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::group(['middleware' => 'auth:api'], function()
-{
+Route::group(['middleware' => 'auth:api'], function(){
     Route::post("/posts", "API\PostController@store")->name("posts.store");
     Route::put("/posts/{post}", "API\PostController@update")->name("posts.update");
     Route::delete("/posts/{post}", "API\PostController@destroy")->name("posts.destroy");
-
+    Route::get('verifypostowner/{id}', "API\PostController@verifyPostOwner");
 });
+
 Route::get("/posts", "API\PostController@index")->name("posts.index");
 Route::get("/posts/{id}", "API\PostController@show")->name("posts.show");
 

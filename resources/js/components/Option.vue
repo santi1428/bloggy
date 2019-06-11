@@ -7,7 +7,7 @@
                     </div>
                 </div>
                 <ul v-if="mostrarLista" v-bind:class="{'animated lightSpeedIn': mostrarLista}" class="shadow">
-                    <li><a href="#"><i class="fas fa-edit mr-2 text-success"></i>Editar publicación</a></li>
+                    <li> <router-link :to="{name: 'UpdatePost', params: { id }}"><i class="fas fa-edit mr-2 text-success"></i>Editar publicación</router-link></li>
                     <li @click.prevent="mostrarModalEliminarDePostId(id)"><a href="#"><i class="fas fa-trash-alt mr-2 text-danger"></i>Eliminar publicación</a></li>
                 </ul>
             </div>
