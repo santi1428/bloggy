@@ -8,6 +8,7 @@ import Posts from './views/Posts';
 import Logout from './components/Logout';
 import Post from './views/Post';
 import UpdatePost from './components/UpdatePost';
+import Profile from './views/Profile';
 
 Vue.use(VueRouter);
 
@@ -72,6 +73,14 @@ const router = new VueRouter({
                 requiresAuth: true
             }
         },
+        {
+            path: "/profile",
+            name: "Profile",
+            component: Profile,
+            meta: {
+                requiresAuth: true
+            }
+        }        
     ]
 });
 

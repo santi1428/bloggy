@@ -33,7 +33,7 @@
                                 <div class="col post-body" v-html="post.body">
                                 </div>
                             </div> 
-                    <options class="options" v-if="post.user_id === parseInt(getUserId)" v-bind:id="post.id"></options>
+                    <options class="options" v-if="loggedIn && post.user_id === parseInt(getUserId)" v-bind:id="post.id"></options>
                     </div>
                 </div>
                 <div class="row">

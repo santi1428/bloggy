@@ -32,15 +32,14 @@ const app = new Vue({
     el: '#app',
     router: Routes,
     store: Store,
-    created(){
-        if(Store.getters.loggedIn){
+    beforeMounted(){
+        if(Store.getters.loggedIn && Store.getters.getToken !== null){
             axios.defaults.headers.common['Authorization'] = `Bearer ${Store.getters.getToken}`;
             axios.get("/isloggedin").then(res => {
                 return;
             })
             .catch(err => {
-                Store.commit('destruirToken');
-                localStorage.removeItem("access_token");
+                Store.dispatch("destruirUsuario");
                 this.$router.push({path:"/login"});
             });
         }

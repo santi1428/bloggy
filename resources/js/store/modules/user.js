@@ -1,13 +1,15 @@
+import axios from "axios";
+
 const state = {
-    token: localStorage.getItem("access_token") || null,
-    user_id: localStorage.getItem("user_id") || null
+    user: JSON.parse(localStorage.getItem("user")) || null
 };
 
 const getters = {
-    getToken: state => state.token,
-    getUserId: state => state.user_id,
+    getUser: state => state.user,
+    getToken: state => state.user.token,
+    getUserId: state => state.user.user_id,
     loggedIn(state){
-        if(state.token !== null && state.user_id !== null){
+        if(state.user !== null){
             return true;
         }else{
             return false;
@@ -16,66 +18,83 @@ const getters = {
 };
 
 const mutations = {
-    asignarToken(state, token) {
-        state.token = token;
+    // asignarToken(state, token) {
+    //     state.token = token;
+    // },
+    // asignarUsuarioId(state, user_id){
+    //     state.user_id = user_id;
+    // },
+    // destruirToken(state){
+    //     state.token = null;
+    // },
+    // destruirUsuarioId(state){
+    //     state.user_id = null;
+    // }
+    destruirUsuario(state){
+        state.user = null;
     },
-    asignarUsuarioId(state, user_id){
-        state.user_id = user_id;
-    },
-    destruirToken(state){
-        state.token = null;
-    },
-    destruirUsuarioId(state){
-        state.user_id = null;
+    asignarUsuario(state, user){
+        state.user = user;
     }
 };
 
 const actions = {
     configurarUsuario({ commit }, data){
         return new Promise((resolve, reject) => {
-            commit('asignarToken', data.access_token);
-            localStorage.setItem("access_token", data.access_token);
-            commit("asignarUsuarioId", data.user_id);
-            localStorage.setItem("user_id", data.user_id);
-            if(localStorage.getItem("access_token")!==null && localStorage.getItem("user_id")!==null){
+            // commit('asignarToken', data.access_token);
+            // localStorage.setItem("access_token", data.access_token);
+            // commit("asignarUsuarioId", data.user_id);
+            // localStorage.setItem("user_id", data.user_id);
+            // if(localStorage.getItem("access_token")!==null && localStorage.getItem("user_id")!==null){
+            //     resolve();
+            // }else{
+            //     reject();
+            // }
+            commit('asignarUsuario', data);
+            localStorage.setItem("user", JSON.stringify(data));
+            if(localStorage.getItem("user") !== null){
                 resolve();
             }else{
                 reject();
             }
         });
     },
-    removerUsuario({ commit, dispatch }){
+    destruirUsuario({ commit, dispatch }){
         if(this.getters.loggedIn){
             return new Promise((resolve, reject) => {
                 axios.post("/logout").then(() => {
-                    if(dispatch("destruirUsuario")){
+                    commit("destruirUsuario");
+                    localStorage.removeItem("user");
+                    if(localStorage.getItem("user") === null && this.getters.getUser === null){
                         resolve();
-                    }    
+                    }  
                 }).catch(err => {
-                    if(dispatch("destruirUsuario")){
+                    commit("destruirUsuario");
+                    localStorage.removeItem("user");
+                    if(localStorage.getItem("user") === null && this.getters.getUser === null){
                         resolve();
-                    }   
+                    }  
                 });       
             })
         }else{
             reject("You can't log out!");
         }
     },
-    destruirUsuario({ commit }){
-        commit('destruirToken');
-        localStorage.removeItem("access_token");
-        commit('destruirUsuarioId');
-        localStorage.removeItem("user_id");
-        if(localStorage.getItem("access_token")===null &&
-           this.getters.getToken===null &&
-           localStorage.getItem("user_id")===null &&
-           this.getters.getUserId===null
-           ){
-            return true;
-        }else{
-            return false;
-        }
-    }
+    // destruirUsuario({ commit }){
+        // commit('destruirToken');
+        // localStorage.removeItem("access_token");
+        // commit('destruirUsuarioId');
+        // localStorage.removeItem("user_id");
+        // if(localStorage.getItem("access_token")===null &&
+        //    this.getters.getToken===null &&
+        //    localStorage.getItem("user_id")===null &&
+        //    this.getters.getUserId===null
+        //    ){
+        //     return true;
+        // }else{
+        //     return false;
+        // }
+    // }
 };
 
 
