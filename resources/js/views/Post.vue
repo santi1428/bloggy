@@ -12,7 +12,7 @@
             <div class="row  shadow-sm rounded py-3 mt-md-2" v-else>
                 <div class="col">
                         <div class="row">
-                            <div class="col-auto"><i class="fas fa-user-circle text-primary fa-4x"></i></div>
+                            <div class="col-auto"><img :src="'/storage/profile_images/' + post.user.image" alt="imagen no disponible"></div>
                             <div class="col-auto">
                                 <p class="nombre">{{ post.user.name }}</p>
                                 <div class="fecha">Publicado el {{ post.created_at }}</div>
@@ -61,6 +61,12 @@ export default {
 
     .fecha{
         font-size: 0.9rem;
+    }
+
+    img{
+        border-radius: 100%;
+        height: 48px;
+        width: 48px;
     }
 
 </style>

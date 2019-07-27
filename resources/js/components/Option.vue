@@ -146,6 +146,15 @@ export default {
           
         }
 
+        @media(min-height: 700px) and (max-height: 780px){
+            ul{
+                top: 1%;
+                right: 5%;
+                width: 43%;
+                font-size: 11.8px;
+            }
+        }
+
 
 
 </style>

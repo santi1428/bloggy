@@ -1,13 +1,14 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from './views/Home';
-import RegisterForm from './components/RegisterForm';
-import Login from './components/Login';
-import CreatePost from './components/CreatePost';
-import Posts from './views/Posts';
-import Logout from './components/Logout';
-import Post from './views/Post';
-import UpdatePost from './components/UpdatePost';
+const Home = () => import('./views/Home');
+const RegisterForm = () => import('./components/RegisterForm');
+const Login = () => import('./components/Login');
+const CreatePost = () => import('./components/CreatePost');
+const Posts = () => import('./views/Posts');
+const Logout = () => import('./components/Logout');
+const Post = () => import('./views/Post');
+const UpdatePost = () => import('./components/UpdatePost');
+const Profile = () => import('./views/Profile');
 
 Vue.use(VueRouter);
 
@@ -68,6 +69,14 @@ const router = new VueRouter({
             path: "/posts/update/:id",
             name: "UpdatePost",
             component: UpdatePost,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: "/profile",
+            name: "Profile",
+            component: Profile,
             meta: {
                 requiresAuth: true
             }

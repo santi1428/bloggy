@@ -23,7 +23,7 @@
                 <div class="row post">
                     <div class="col-12 encabezado-publicacion">
                             <div class="row">
-                                <div class="col-auto"><i class="fas fa-user-circle text-primary fa-3x"></i></div>
+                                <div class="col-auto"><img :src="'/storage/profile_images/' + post.user.image" alt="imagen no disponible"></div>
                                 <div class="col-auto">
                                     <p class="nombre">{{ post.user.name }}</p>
                                     <small>Publicado el {{ post.created_at }}</small>
@@ -76,7 +76,7 @@
 
 <script>
 import Option from '../components/Option';
-import DeletePost from '../components/DeletePost';
+const DeletePost = () => import('../components/DeletePost');
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
@@ -219,5 +219,11 @@ export default {
 
     #infinite-scroll-trigger{
         height: 1px;
+    }
+
+    img{
+        border-radius: 100%;
+        height: 48px;
+        width: 48px;
     }
 </style>

@@ -11,6 +11,7 @@
             <div class="navbar-nav ml-auto ">
                 <router-link v-if="!loggedIn" :to="{name: 'Login'}" class="nav-item nav-link py-3 mr-0 mr-md-3 mr-lg-5 px-4 active"><i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión</router-link>
                 <router-link v-if="!loggedIn" :to="{name: 'Register'}" class="nav-item nav-link py-3 mr-0 mr-md-3 mr-lg-5 px-4 active"><i class="fas fa-user-plus mr-2"></i>Registrarse</router-link>
+                <router-link v-if="loggedIn" :to="{name: 'Profile'}" class="nav-item nav-link py-3 mr-0 mr-md-5 px-4 active"> <img :src="'/storage/profile_images/' + getUserImage" class="mr-2">Mi perfil</router-link>
                 <router-link v-if="loggedIn" :to="{name: 'Logout'}" class="nav-item nav-link py-3 mr-0 mr-md-5 px-4 active"><i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión</router-link>
             </div>
         </div>
@@ -22,7 +23,7 @@ import { mapGetters } from 'vuex';
 
 export default {
     name:"Navbar",
-    computed: mapGetters(['loggedIn'])
+    computed: mapGetters(['loggedIn', 'getUserImage'])
 }
 </script>
 
@@ -49,5 +50,11 @@ export default {
   .navbar-brand:hover{
       transition: 0.3s;
       font-size: 18.1px;  
+  }
+
+  img{
+      border-radius: 100%;
+      height: 20px;
+      width: 20px;
   }
 </style>

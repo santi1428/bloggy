@@ -1,0 +1,135 @@
+<template>
+    <div class="container">
+        <div class="row justify-content-center mt-2">
+            <div class="col-lg-4 card shadow-lg rounded">
+                <div class="card-body">
+                    <upload-file></upload-file>
+                    <update-profile v-if="mostrarModal"></update-profile>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="name">Nombre</label>
+                                <input type="text" v-model="campos.nombre" class="form-control" v-bind:class="{'is-invalid': this.invalidos.nombre}">
+                                <div class="invalid-feedback">{{verificarNombre}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" v-model="campos.email" class="form-control" @input="verificarEmail" v-bind:class="{'is-invalid': this.invalidos.email.state}">
+                                <div class="invalid-feedback">{{ invalidos.email.msg }}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Contraseña</label>
+                                <input type="password" name="password" id="password" value="contraseña" class="form-control mb-1" disabled>
+                                <a href="#" class="text-dark">Cambiar contraseña</a>
+                            </div>
+                            <button class="btn btn-success btn-block" type="submit" :disabled="actualizar" @click="mostrarModal = true"><i class="fas fa-edit mr-2"></i>Actualizar Informacion</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import UploadFile from '../components/UploadFile';
+const UpdateProfile = () => import('../components/UpdateProfile');
+export default {
+    name: "Profile",
+    components: {
+        "upload-file": UploadFile,
+        "update-profile": UpdateProfile
+    },
+    data(){
+        return {
+            campos: {
+                nombre: "",
+                email: ""
+            },
+            invalidos: {
+                nombre: false,
+                email: {state: false, msg: ""}
+            },
+            datosOriginales: {
+                nombre: "",
+                email: ""
+            },
+            mostrarModal: false
+        }
+    },
+    methods:{
+        async verificarDisponibilidadEmail(){
+            const res = await axios.get(`/register/${this.campos.email}`);
+            const data = await res.data;
+            return data;
+        },
+        async verificarEmail() {
+            if(this.campos.email != this.datosOriginales.email){
+                if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.campos.email)){
+                    this.invalidos.email.state = false;
+                    const data = await this.verificarDisponibilidadEmail();
+                    if(data === 0){
+                        this.invalidos.email.state = true;
+                        this.invalidos.email.msg = "Este correo ya está en uso. No esta disponible."   
+                    }
+                }else {
+                    this.invalidos.email.state = true;
+                    this.invalidos.email.msg = "El correo ingresado no es válido."
+                }
+            }else{
+                 this.invalidos.email.state = false;
+            }
+        }
+    },
+    created(){
+        axios.get("/userdata")
+        .then(res => {
+            this.datosOriginales.nombre = res.data.name;
+            this.datosOriginales.email = res.data.email;
+            this.campos.nombre = res.data.name;
+            this.campos.email = res.data.email;
+        })
+        .catch(err => console.log(err));
+    },
+    computed: {
+        verificarNombre() {
+            if(this.campos.nombre.length > 0) {
+                if(this.campos.nombre.length < 3){
+                    this.invalidos.nombre = true;
+                    return "Debes de ingresar un nombre válido."
+                }else{ 
+                    this.invalidos.nombre = false;
+                }
+            }
+        },
+        actualizar(){
+            if(this.campos.nombre != this.datosOriginales.nombre || this.campos.email != this.datosOriginales.email){
+                if(this.invalidos.nombre === false && this.invalidos.email.state === false){
+                    return false;
+                }else{
+                    return true;
+                }
+            }else{
+                return true;
+            }
+        }
+    }
+
+}
+</script>
+<style scoped>
+.container{
+    position: relative;
+}
+
+.card{
+    position: absolute;
+    top: 10%;
+}
+
+a{
+    font-size: 13.5px;
+}
+
+</style>
