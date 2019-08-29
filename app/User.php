@@ -17,4 +17,9 @@ class User extends Model implements AuthenticatableContract
         return $this->hasMany('App\Post');
     }
 
+    public function likes()
+    {
+        return $this->belongsToMany(Post::class, "likes", "UserId", "PostId");
+    }
+
 }

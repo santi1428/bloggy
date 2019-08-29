@@ -16,9 +16,19 @@
             </div>
      </div>
  </div>
-
+<div class="toast shadow-lg rounded" id="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2500">
+    <!-- <div class="toast-header bg-success animate rotateIn">
+        <strong class="mx-auto text-white"><i class="fas fa-check-circle mr-2"></i>Acción Completada</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div> -->
+    <div class="toast-body text-center bg-success text-white" id="mensajeToast">
+        <i class="fas fa-check-circle mr-2"></i>{{mostrarMensajeToast}}
+    </div>
+</div> 
  <div v-if="getPosts!==null">
-    <div v-if="getPosts.length!==0">
+    <div v-if="getPosts.length!==0"> 
         <div v-for="post in getPosts" :key="post.id" class="box">
                 <div class="row post">
                     <div class="col-12 encabezado-publicacion">
@@ -28,12 +38,30 @@
                                     <p class="nombre">{{ post.user.name }}</p>
                                     <small>Publicado el {{ post.created_at }}</small>
                                 </div>
+                                <!-- <div class="col">
+                                    <div class="row justify-content-end">
+                                        <div class="col-auto">
+                                            <i class="fas fa-thumbs-up text-primary mr-2"></i><span class="text-primary font-weight-bold">25 likes</span>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments text-secondary fa-2x mr-2"></i><span class="text-secondary font-weight-bold">25 comentarios</span>
+                                        </div>
+                                    </div>
+                                </div> -->
                             </div>
                             <div class="row mt-2">
                                 <div class="col post-body" v-html="post.body">
                                 </div>
                             </div> 
                     <options class="options" v-if="post.user_id === parseInt(getUserId)" v-bind:id="post.id"></options>
+                    </div>
+                </div>
+                <div class="row my-2">
+                    <div class="col-auto">
+                        <like :id="post.id"></like>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-comments text-info fa-2x mr-2"></i><span class="text-info font-weight-bold">25 comentarios</span>
                     </div>
                 </div>
                 <div class="row">
@@ -77,18 +105,22 @@
 <script>
 import Option from '../components/Option';
 const DeletePost = () => import('../components/DeletePost');
+import Like from '../components/Like';
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
+import { setTimeout } from 'timers';
 export default {
     name: "Posts",
     components: {
         'options': Option,
-        'deletepost': DeletePost
+        'deletepost': DeletePost,
+        'like': Like
     },
     data(){
         return {
-            mostrarCargandoPublicaciones: false
+            mostrarCargandoPublicaciones: false,
+            mounted: false
         }
     },
     methods:{
@@ -112,7 +144,7 @@ export default {
                 });
                 observer.observe(document.getElementById("infinite-scroll-trigger"));
         },
-        ...mapMutations(["resetearPaginacion"])
+        ...mapMutations(["resetearPaginacion", "asignarMensajeToast"])
     },
     created(){
         this.resetearPaginacion();
@@ -120,10 +152,27 @@ export default {
         .then(() => this.traerPublicacionesConScroll())
         .catch(err => console.log(err));
     },
-    computed: mapGetters(["loggedIn", "getPosts", "getUserId", "getMostrarModalEliminarDePostId"]),
-    mounted(){
-            
-    }
+    computed: 
+    {
+        ...mapGetters(["loggedIn", "getPosts", "getUserId", "getMostrarModalEliminarDePostId", "getMensajeToast"]),
+        mostrarMensajeToast(){
+            if(this.getMensajeToast !== "" && this.mounted){
+                let msg = this.getMensajeToast;
+                this.asignarMensajeToast("");
+                setTimeout(() => {
+                    $('#toast').toast('show');
+                }, 50)
+                return msg;
+            }else{
+                return "";   
+            }
+        }
+    },
+    // mounted(){
+    //     // alert(window.innerHeight);
+    //     this.mounted = true;
+    //     $('#toast').toast('show');
+    // }
 }
 </script>
 
@@ -137,6 +186,22 @@ export default {
         font-size: 1rem;
         transition: 0.2s;
     }
+ 
+    #toast{
+        position: fixed;
+        z-index: 1000;
+        width: 19vw;
+        top: 90vh;
+        right: 10vw;
+    } 
+
+    #mensajeToast{
+        font-size: 15px;
+    }
+
+    /* .fade {
+      transition: opacity 0.3s linear !important;
+    } */
 
     #boton-crear:hover{
         transition: 0.3s;
@@ -226,4 +291,105 @@ export default {
         height: 48px;
         width: 48px;
     }
+
+    .fa-thumbs-up{
+        font-size: 23px;
+    }
+
+    .fa-comments{
+        font-size: 23px;
+    }
+
+
+    @media (min-width: 392px) and (max-width: 393px) {    
+        #toast{
+            width: 60vw;
+            top: 86vh;
+            right: 20vw; 
+        }
+
+         #mensajeToast{
+            font-size: 13px;
+        }
+    }  
+
+    /* @media (max-width: 320px) {   
+        #toast{
+            position: fixed;
+            z-index: 1000;
+            width: 80vw;
+            top: 85vh;
+            right: 10vw;
+        }
+    } */
+
+    /* @media(min-width: 321px) and (max-width: 360px){
+        #toast{
+            position: fixed;
+            z-index: 1;
+            width: 100vw;
+            top: 10vh;
+            right: 25vh;
+        }
+    }
+
+    
+    @media (max-width: 320px) {   
+        ul{
+            top: 0%;
+            right: 5%;
+            width: 52%;
+            font-size: 11.4px;
+          }
+    }
+
+        @media (min-width: 411px) and (max-width: 500px) {   
+        ul{
+            top: 0%;
+            right: 5%;
+            width: 38%;
+            font-size: 11.4px;
+          }
+          
+        }
+
+        @media (min-width: 501px) and (max-width: 768px) {   
+            ul{
+                top: 0%;
+                right: 3%;
+                width: 20%;
+                font-size: 11.4px;
+            }
+          
+        }
+
+        @media (min-width: 769px) and (max-width: 992px) {   
+            ul{
+                top: 0%;
+                right: 3%;
+                width: 20%;
+                font-size: 11.4px;
+            }
+          
+        }
+
+        @media (min-width: 992px) and (max-width: 1200px) {   
+            ul{
+                top: 0%;
+                right: 2%;
+                width: 15%;
+                font-size: 11.4px;
+            }
+          
+        }
+
+        @media(min-height: 700px) and (max-height: 780px){
+            ul{
+                top: 1%;
+                right: 5%;
+                width: 43%;
+                font-size: 11.8px;
+            }
+        } */
+    
 </style>

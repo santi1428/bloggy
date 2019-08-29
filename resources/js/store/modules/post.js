@@ -2,7 +2,8 @@ const state = {
     posts: null,
     page: 0,
     lastPage: 1,
-    mostrarModalEliminarDePostId: ""
+    mostrarModalEliminarDePostId: "",
+    mensajeToast: "",
 };
 
 const getters = {
@@ -17,6 +18,9 @@ getLastPage(state){
 },
 getMostrarModalEliminarDePostId(state){
     return state.mostrarModalEliminarDePostId;
+},
+getMensajeToast(state){
+    return state.mensajeToast;
 }
 };
 
@@ -46,6 +50,9 @@ mostrarModalEliminarDePostId(state, id){
 },
 ocultarModalEliminar(state){
     state.mostrarModalEliminarDePostId = "";
+},
+asignarMensajeToast(state, msg){
+    state.mensajeToast = msg;
 }
 };
 
@@ -55,6 +62,7 @@ guardarPublicacion({commit}, publicacion){
             axios.post("/api/posts", publicacion)
             .then(res => {
                 if(res.status === 200){
+                    commit("asignarMensajeToast", "Se ha creado la publicación");
                     resolve();
                 }else{
                     reject();
@@ -99,11 +107,9 @@ eliminarPublicacion({ commit }, id){
             axios.delete(`/api/posts/${id}`)
             .then(res => {
                 if(res.status === 200){
-                    setTimeout(() => {
-                        $('#myModal').modal('hide');
-                        commit("removerPublicacion", id);
-                        commit("ocultarModalEliminar");
-                    }, 1050);                  
+                    $('#myModal').modal('hide');
+                    commit("removerPublicacion", id);
+                    commit("ocultarModalEliminar");             
                     resolve(res);        
                 }
             })

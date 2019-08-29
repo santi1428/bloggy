@@ -44,7 +44,8 @@
                     this.guardarPublicacion(publicacion)
                     .then(() => {
                         this.button = 0;
-                        this.$router.push({name: "Posts"})    
+                        this.$router.push({name: "Posts"});    
+                        // $('#toast').toast('show');
                     })
                     .catch(err => {
                         this.button = 0;

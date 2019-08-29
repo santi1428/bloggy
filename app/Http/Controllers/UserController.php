@@ -19,6 +19,7 @@ class UserController extends Controller
             $user_id = $request->user()->id;
             $user_image = $request->user()->image;
             $user_email = $request->user()->email;
+            $user_likes = $request->user()->likes;
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->token;
             $token->save();
@@ -26,7 +27,8 @@ class UserController extends Controller
                 'access_token' => $tokenResult->accessToken,
                 'user_id' => $user_id,
                 'user_image' => $user_image,
-                'user_email' => $user_email
+                'user_email' => $user_email,
+                'user_likes' => $user_likes
             ]);
         }else{
             return response()->json([
@@ -82,5 +84,15 @@ class UserController extends Controller
                                  "name" => $request->user()->name,
                                  "email" => $request->user()->email
                                  ]);
+    }
+
+    public function like(Request $request){
+        $request->user()->likes()->attach($request->postId);
+        return $request->user()->likes;
+    }
+
+    public function removeLike(Request $request){
+        $request->user()->likes()->detach($request->postId);
+        return $request->user()->likes;
     }
 }

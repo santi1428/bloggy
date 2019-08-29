@@ -11,6 +11,17 @@
             </div>
             <div class="row  shadow-sm rounded py-3 mt-md-2" v-else>
                 <div class="col">
+                        <div class="toast shadow-lg rounded" id="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2500">
+                            <!-- <div class="toast-header bg-success animate rotateIn">
+                                <strong class="mx-auto text-white"><i class="fas fa-check-circle mr-2"></i>Acción Completada</strong>
+                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div> -->
+                            <div class="toast-body text-center bg-success text-white" id="mensajeToast">
+                                <i class="fas fa-check-circle mr-2"></i>{{mostrarMensajeToast}}
+                            </div>
+                        </div> 
                         <div class="row">
                             <div class="col-auto"><img :src="'/storage/profile_images/' + post.user.image" alt="imagen no disponible"></div>
                             <div class="col-auto">
@@ -23,6 +34,18 @@
                                 <div v-html="post.body"></div>
                             </div> 
                         </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <like :id="post.id"></like>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                Comentarios
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -32,16 +55,38 @@
 </template>
 
 <script>
+import Like from '../components/Like';
 import { mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
+import { mapMutations } from 'vuex';
 export default {
     name: 'Post',
+    components: {
+        "like": Like
+    },
     data(){
         return {
            post: null
         }   
     },
     methods: {
-        ...mapActions(["traerPublicacion"])
+        ...mapActions(["traerPublicacion"]),
+        ...mapMutations(["asignarMensajeToast"])
+    },
+    computed: {
+        mostrarMensajeToast(){
+            if(this.getMensajeToast !== ""){
+                let msg = this.getMensajeToast;
+                this.asignarMensajeToast("");
+                setTimeout(() => {
+                    $('#toast').toast('show');
+                }, 50)
+                return msg;
+            }else{
+                return "";   
+            }
+        }, 
+        ...mapGetters(["getMensajeToast"])
     },
     created(){
          this.traerPublicacion(this.$route.params.id)
@@ -69,4 +114,16 @@ export default {
         width: 48px;
     }
 
+
+    #toast{
+        position: fixed;
+        z-index: 1000;
+        width: 19vw;
+        top: 90vh;
+        right: 25vh;
+    }
+
+    #mensajeToast{
+        font-size: 15px;
+    }
 </style>

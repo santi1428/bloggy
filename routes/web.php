@@ -21,8 +21,6 @@ Route::get('/{pages}', "VueController@index")
 Route::get('posts/{id}', "VueController@index");
 Route::get('posts/update/{id}', "VueController@index");
 
-
-
 Route::get("/register/{email}", "UserController@verifyEmail");
 Route::post("/uploadprofileimage", "UserController@uploadProfileImage")->middleware("auth:api");
 Route::post("/register", "UserController@register");
@@ -32,3 +30,5 @@ Route::get("/isloggedin", function(){
     return response()->json(["message" => "You are logged in"], 200);
 })->middleware("auth:api");
 Route::get("/userdata", "UserController@show")->middleware("auth:api");
+Route::post("/like", "UserController@like")->middleware("auth:api");
+Route::post("/removeLike", "UserController@removeLike")->middleware("auth:api");
