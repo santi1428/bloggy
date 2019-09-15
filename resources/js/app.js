@@ -1,6 +1,5 @@
 import "./bootstrap";
 import Vue from 'vue';
-
 import Routes from './routes.js';
 import Navbar from './components/Navbar';
 import Store from './store/index.js';
@@ -11,19 +10,41 @@ Routes.beforeEach((to, from, next) => {
         if (!Store.getters.loggedIn) {
             next({
                 name: 'Login',
-            })
+            });
         } else {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${Store.getters.getToken}`;
+            axios.get('/userdata')
+            .then(res => {
+                Store.dispatch("actualizarDatos", res.data);
+                console.log("making request...");
+            })
+            .catch(err => console.log(err));
             next()
         }
     } else if (to.matched.some(record => record.meta.requiresVisitor)) {
         if (Store.getters.loggedIn) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${Store.getters.getToken}`;
+            axios.get('/userdata')
+            .then(res => {
+                Store.dispatch("actualizarDatos", res.data);
+                console.log("making request...");
+            })
+            .catch(err => console.log(err));
             next({
                 name: 'Posts',
-            })
+            });
         } else {
             next()
         }
     } else {
+        if (Store.getters.loggedIn) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${Store.getters.getToken}`;
+            axios.get('/userdata')
+            .then(res => {
+                Store.dispatch("actualizarDatos", res.data);
+            })
+            .catch(err => console.log(err));
+        }
         next()
     }
 });

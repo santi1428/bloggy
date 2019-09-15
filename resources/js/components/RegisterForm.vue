@@ -1,9 +1,12 @@
 <template>
 <div class="container">
 <title>Registro</title>
-<div class="row justify-content-center">
-    <div class="col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-    <form class="card card-body mt-5" @submit.prevent="submit">
+<div class="row justify-content-center mt-5">
+    <div class="card px-0 col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+    <div class="card-header bg-dark text-white text-center">
+        Formulario de registro
+    </div>
+    <form class="card-body" @submit.prevent="submit">
         <div class="form-group">
             <label for="nombre">Nombre</label>
             <input type="text" name="nombre" v-model="campos.nombre" placeholder="Ingrese su nombre" class="form-control" v-bind:class="{'is-invalid': this.invalidos.nombre}" required>

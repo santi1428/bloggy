@@ -30,7 +30,7 @@
             };
         },
         methods: {
-            ...mapActions(["guardarPublicacion"]),
+            ...mapActions(["guardarPublicacion", "asignarDatosToast"]),
              onReady( editor )  {
                  editor.ui.getEditableElement().parentElement.insertBefore(
                     editor.ui.view.toolbar.element,
@@ -44,8 +44,10 @@
                     this.guardarPublicacion(publicacion)
                     .then(() => {
                         this.button = 0;
-                        this.$router.push({name: "Posts"});    
-                        // $('#toast').toast('show');
+                        this.$router.push({name: "Posts"});   
+                        setTimeout(() => {
+                            this.asignarDatosToast({msg: "Se ha creado la publicación", clase: "bg-success", icono: "fas fa-check-circle"})
+                        }, 100);
                     })
                     .catch(err => {
                         this.button = 0;

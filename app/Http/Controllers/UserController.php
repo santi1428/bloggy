@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -16,16 +17,18 @@ class UserController extends Controller
         $credentials = ["email" => $email, "password" => $password];
         if (Auth::attempt($credentials)) {
             $user = $request->user();
+            $user_name = $request->user()->name;
             $user_id = $request->user()->id;
             $user_image = $request->user()->image;
             $user_email = $request->user()->email;
-            $user_likes = $request->user()->likes;
+            $user_likes = Arr::pluck($request->user()->likes, 'PostId');
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->token;
             $token->save();
             return response()->json([
                 'access_token' => $tokenResult->accessToken,
                 'user_id' => $user_id,
+                'user_name' => $user_name,
                 'user_image' => $user_image,
                 'user_email' => $user_email,
                 'user_likes' => $user_likes
@@ -81,18 +84,60 @@ class UserController extends Controller
 
     public function show(Request $request){
         return response()->json([
-                                 "name" => $request->user()->name,
-                                 "email" => $request->user()->email
-                                 ]);
+            "name" => $request->user()->name,
+            "email" => $request->user()->email,
+            "image" => $request->user()->image,
+            "likes" => Arr::pluck($request->user()->likes, 'PostId')
+        ]);
     }
 
     public function like(Request $request){
         $request->user()->likes()->attach($request->postId);
-        return $request->user()->likes;
+        return Arr::pluck($request->user()->likes, 'PostId');
     }
 
     public function removeLike(Request $request){
         $request->user()->likes()->detach($request->postId);
-        return $request->user()->likes;
+        return Arr::pluck($request->user()->likes, 'PostId');
     }
+
+    public function updateProfile(Request $request){
+        $request->validate(["nombre" => "required", "email" => "email|required", "contrasena" => "required"]);
+        $user = User::find($request->user()->id);
+        $hashedPassword = $user->password;
+        if(Hash::check($request->contrasena, $hashedPassword)){
+            if($user->name != $request->nombre){
+                $user->name = $request->nombre;
+            }
+            if(!User::where([["email", "=", $request->email], ["id", "<>", $request->user()->id]])->first()){
+                if($user->email != $request->email){
+                    $user->email = $request->email;
+                }
+            }
+            $user->save();
+            return response()->json([
+                'message' => 'Perfil actualizado'], 200);
+            }
+        else{
+            return response()->json([
+                'message' => 'Invalid password'], 401);
+            }
+    }
+
+    public function updatePassword(Request $request){
+        $request->validate(["nuevaContrasena" => "required", "contrasena" => "required"]);
+        $user = User::find($request->user()->id);
+        $hashedPassword = $user->password;
+        if(Hash::check($request->contrasena, $hashedPassword)){
+            $user->password = Hash::make($request->input("nuevaContrasena"));
+            $user->save();
+            return response()->json([
+                'message' => 'Contraseña actualizada'], 200);
+        }else{
+            return response()->json([
+                'message' => 'Invalid password'], 401);
+            
+        }
+    }
+    
 }

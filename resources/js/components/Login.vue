@@ -10,8 +10,11 @@
                     </div>
                 </div>
             </div>
-            <div class="card card-body mx-auto my-auto">            
-            <form @input="verificarBotonEnviar" @submit.prevent="login">
+            <div class="card mx-auto my-auto">          
+            <div class="card-header bg-dark text-white text-center">
+                Login
+            </div>
+            <form class="card-body" @input="verificarBotonEnviar" @submit.prevent="login">
                 <div class="form-group">
                     <label for="correo">Correo</label>
                     <input type="email" v-model="campos.correo"  class="form-control form-control" :class="{'is-invalid':invalidos.correo}" placeholder="Ingrese su correo" required>

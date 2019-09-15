@@ -3,7 +3,8 @@ const state = {
     page: 0,
     lastPage: 1,
     mostrarModalEliminarDePostId: "",
-    mensajeToast: "",
+    mostrarAnimacionPublicarDePostId: "",
+    mostrarAnimacionEliminarDePostId: ""
 };
 
 const getters = {
@@ -19,8 +20,11 @@ getLastPage(state){
 getMostrarModalEliminarDePostId(state){
     return state.mostrarModalEliminarDePostId;
 },
-getMensajeToast(state){
-    return state.mensajeToast;
+getMostrarAnimacionPublicarDePostId(state){
+    return state.mostrarAnimacionPublicarDePostId;
+},
+getMostrarAnimacionEliminarDePostId(state){
+    return state.mostrarAnimacionEliminarDePostId;
 }
 };
 
@@ -51,18 +55,25 @@ mostrarModalEliminarDePostId(state, id){
 ocultarModalEliminar(state){
     state.mostrarModalEliminarDePostId = "";
 },
-asignarMensajeToast(state, msg){
-    state.mensajeToast = msg;
+asignarMostrarAnimacionPublicarDePostId(state, id){
+    state.mostrarAnimacionPublicarDePostId = id;
+},
+asignarMostrarAnimacionEliminarDePostId(state, id){
+    state.mostrarAnimacionEliminarDePostId = id;
 }
 };
 
 const actions = {
-guardarPublicacion({commit}, publicacion){
+guardarPublicacion({ commit }, publicacion){
         return new Promise((resolve, reject) => {
             axios.post("/api/posts", publicacion)
             .then(res => {
                 if(res.status === 200){
-                    commit("asignarMensajeToast", "Se ha creado la publicación");
+                    console.log(res.data.postId);
+                    commit("asignarMostrarAnimacionPublicarDePostId", res.data.postId);
+                    setTimeout(() => {
+                        commit("asignarMostrarAnimacionPublicarDePostId", "");
+                    }, 1500);
                     resolve();
                 }else{
                     reject();
@@ -76,7 +87,6 @@ guardarPublicacion({commit}, publicacion){
 traerPublicaciones({ commit, getters, dispatch }){
     return new Promise((resolve, reject) => {
         if(getters.getPage <= getters.getLastPage){
-            console.log("making request");
             axios.get(`/api/posts?page=${getters.getPage}`).then(res => {
                 if(res.status === 200){
                     commit('aumentarNumeroPagina');
@@ -102,14 +112,19 @@ traerPublicacion({ commit }, id){
         .catch(err => reject(err));
     });
 },
-eliminarPublicacion({ commit }, id){
+eliminarPublicacion({ commit, dispatch }, id){
     return new Promise((resolve, reject) => {          
             axios.delete(`/api/posts/${id}`)
             .then(res => {
                 if(res.status === 200){
                     $('#myModal').modal('hide');
-                    commit("removerPublicacion", id);
                     commit("ocultarModalEliminar");             
+                    setTimeout(() => {
+                        commit("asignarMostrarAnimacionEliminarDePostId", "");
+                        commit("removerPublicacion", id);
+                    }, 500);
+                    commit("asignarMostrarAnimacionEliminarDePostId", id);
+                    dispatch("asignarDatosToast", {msg: "Se ha eliminado la publicación", clase: "bg-success", icono: "fas fa-trash-alt"});
                     resolve(res);        
                 }
             })

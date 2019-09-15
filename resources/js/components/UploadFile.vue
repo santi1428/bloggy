@@ -13,6 +13,7 @@
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex';
 import { mapGetters } from 'vuex';
 import { mapMutations } from 'vuex';
 export default {
@@ -52,6 +53,7 @@ export default {
                 if(this.progressBarWidth === 100){
                     setTimeout(() => {
                         this.progressBar = false;
+                        this.asignarDatosToast({msg: "Foto actualizada", clase: "bg-success", icono: "fas fa-check-circle"});
                     }, 3000);
                 }
             })
@@ -63,7 +65,8 @@ export default {
                 }
             }); 
         },
-        ...mapMutations(["asignarUsuarioImagen"])
+        ...mapMutations(["asignarUsuarioImagen"]),
+        ...mapActions(["asignarDatosToast"])
     },
     created(){
         this.user.imageUrl =  `/storage/profile_images/${this.getUserImage}`;

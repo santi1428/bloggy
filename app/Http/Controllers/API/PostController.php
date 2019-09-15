@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Post;
-use App\Http\Controllers\API\DB;
 
 class PostController extends Controller
 {
@@ -21,10 +20,10 @@ class PostController extends Controller
         $request->validate(["post" => "required"]);
         $postData = $request->input("post");
         $user = User::find($request->user()->id);
-        $user->posts()->create([
+        $post = $user->posts()->create([
             'body' => $postData
         ]);
-        return response()->json(["message"=> "Se ha registrado la publicacion con éxito"], 200);
+        return response()->json(["message"=> "Se ha registrado la publicacion con éxito", "postId" => $post->id], 200);
     }
 
     public function show($id)

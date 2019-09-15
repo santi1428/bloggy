@@ -16,38 +16,17 @@
             </div>
      </div>
  </div>
-<div class="toast shadow-lg rounded" id="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2500">
-    <!-- <div class="toast-header bg-success animate rotateIn">
-        <strong class="mx-auto text-white"><i class="fas fa-check-circle mr-2"></i>Acción Completada</strong>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
-    </div> -->
-    <div class="toast-body text-center bg-success text-white" id="mensajeToast">
-        <i class="fas fa-check-circle mr-2"></i>{{mostrarMensajeToast}}
-    </div>
-</div> 
  <div v-if="getPosts!==null">
     <div v-if="getPosts.length!==0"> 
-        <div v-for="post in getPosts" :key="post.id" class="box">
+        <div v-for="post in getPosts" :key="post.id" class="box" :class="{'animated fadeIn': post.id == getMostrarAnimacionPublicarDePostId, 'animated fadeOut': post.id == getMostrarAnimacionEliminarDePostId}">
                 <div class="row post">
                     <div class="col-12 encabezado-publicacion">
                             <div class="row">
                                 <div class="col-auto"><img :src="'/storage/profile_images/' + post.user.image" alt="imagen no disponible"></div>
                                 <div class="col-auto">
-                                    <p class="nombre">{{ post.user.name }}</p>
-                                    <small>Publicado el {{ post.created_at }}</small>
+                                    <p class="nombre text-dark"><strong>{{ post.user.name }}</strong></p>
+                                    <small>Publicado {{ mostrarFechaRelativa(post.created_at) }}</small>
                                 </div>
-                                <!-- <div class="col">
-                                    <div class="row justify-content-end">
-                                        <div class="col-auto">
-                                            <i class="fas fa-thumbs-up text-primary mr-2"></i><span class="text-primary font-weight-bold">25 likes</span>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments text-secondary fa-2x mr-2"></i><span class="text-secondary font-weight-bold">25 comentarios</span>
-                                        </div>
-                                    </div>
-                                </div> -->
                             </div>
                             <div class="row mt-2">
                                 <div class="col post-body" v-html="post.body">
@@ -96,16 +75,18 @@
             </div>
         </div>
 </div>
+<toast></toast>
 <div id="infinite-scroll-trigger">
 </div>
-
 </div>
 </template>
 
 <script>
 import Option from '../components/Option';
 const DeletePost = () => import('../components/DeletePost');
+import Toast from '../components/Toast';
 import Like from '../components/Like';
+import moment from 'moment';
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
@@ -115,7 +96,8 @@ export default {
     components: {
         'options': Option,
         'deletepost': DeletePost,
-        'like': Like
+        'like': Like,
+        'toast': Toast
     },
     data(){
         return {
@@ -144,7 +126,29 @@ export default {
                 });
                 observer.observe(document.getElementById("infinite-scroll-trigger"));
         },
-        ...mapMutations(["resetearPaginacion", "asignarMensajeToast"])
+        mostrarFechaRelativa(fecha){
+            moment.updateLocale('es', {
+                relativeTime : {
+                    future: "en %s",
+                    past:   "hace %s",
+                    s  : 'unos segundos',
+                    ss : '%d segundos',
+                    m:  "un minuto",
+                    mm: "%d minutos",
+                    h:  "una hora",
+                    hh: "%d horas",
+                    d:  "un dia",
+                    dd: "%d dias",
+                    M:  "un mes",
+                    MM: "%d meses",
+                    y:  "un año",
+                    yy: "%d años"
+                }
+            });
+            let fechaLocal = moment.utc(fecha).local();
+            return fechaLocal.fromNow();
+        },
+        ...mapMutations(["resetearPaginacion"])
     },
     created(){
         this.resetearPaginacion();
@@ -154,29 +158,16 @@ export default {
     },
     computed: 
     {
-        ...mapGetters(["loggedIn", "getPosts", "getUserId", "getMostrarModalEliminarDePostId", "getMensajeToast"]),
-        mostrarMensajeToast(){
-            if(this.getMensajeToast !== "" && this.mounted){
-                let msg = this.getMensajeToast;
-                this.asignarMensajeToast("");
-                setTimeout(() => {
-                    $('#toast').toast('show');
-                }, 50)
-                return msg;
-            }else{
-                return "";   
-            }
-        }
+        ...mapGetters(["loggedIn", "getPosts", "getUserId", "getMostrarModalEliminarDePostId", "getMostrarAnimacionPublicarDePostId", "getMostrarAnimacionEliminarDePostId"]),
     },
-    // mounted(){
-    //     // alert(window.innerHeight);
-    //     this.mounted = true;
-    //     $('#toast').toast('show');
-    // }
+    mounted(){
+        // alert(window.innerHeight);
+        this.mounted = true;
+    }
 }
 </script>
 
-<style>
+<style scoped>
     #boton-crear{
         text-decoration: none;
         color: #ffff;
@@ -187,17 +178,7 @@ export default {
         transition: 0.2s;
     }
  
-    #toast{
-        position: fixed;
-        z-index: 1000;
-        width: 19vw;
-        top: 90vh;
-        right: 10vw;
-    } 
 
-    #mensajeToast{
-        font-size: 15px;
-    }
 
     /* .fade {
       transition: opacity 0.3s linear !important;
@@ -301,17 +282,6 @@ export default {
     }
 
 
-    @media (min-width: 392px) and (max-width: 393px) {    
-        #toast{
-            width: 60vw;
-            top: 86vh;
-            right: 20vw; 
-        }
-
-         #mensajeToast{
-            font-size: 13px;
-        }
-    }  
 
     /* @media (max-width: 320px) {   
         #toast{

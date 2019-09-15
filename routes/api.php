@@ -18,13 +18,22 @@ use Illuminate\Http\Request;
 // });
 
 Route::group(['middleware' => 'auth:api'], function(){
+    
+    //Posts api routes
+    
     Route::post("/posts", "API\PostController@store")->name("posts.store");
     Route::put("/posts/{post}", "API\PostController@update")->name("posts.update");
     Route::delete("/posts/{post}", "API\PostController@destroy")->name("posts.destroy");
     Route::get('verifypostowner/{id}', "API\PostController@verifyPostOwner");
+    
+    //Comments api routes
+    
+    Route::post("/comments", "API\CommentController@store")->name("comments.store");
+    Route::put("/comments/{comment}", "API\CommentController@update")->name("comments.update");
+    Route::delete("/comments/{comment}", "API\CommentController@destroy")->name("comments.destroy");
 });
 
 Route::get("/posts", "API\PostController@index")->name("posts.index");
 Route::get("/posts/{id}", "API\PostController@show")->name("posts.show");
-
+Route::get("/comments/{id}", "API\CommentController@index")->name("comments.index");
 

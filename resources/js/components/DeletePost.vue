@@ -56,15 +56,13 @@ export default {
             this.eliminarPublicacion(id).then(res =>  {
                  console.log(res.data.message);
                  this.button = 3;
-                 this.asignarMensajeToast("Se ha eliminado la publicación");
-                //  $('#toast').toast('show');
             }).catch(err => {
                 console.log(err);
                 this.button = 0;
             });
         },
         ...mapActions(["eliminarPublicacion"]),
-        ...mapMutations(["ocultarModalEliminar", "asignarMensajeToast"])
+        ...mapMutations(["ocultarModalEliminar"])
     },
     mounted(){
             $('#myModal').modal({

@@ -4,7 +4,9 @@
             <div class="col-lg-4 card shadow-lg rounded">
                 <div class="card-body">
                     <upload-file></upload-file>
-                    <update-profile v-if="mostrarModal"></update-profile>
+                    <update-profile v-if="getMostrarModalActualizarPerfil" :campos="campos" v-on:datos-actualizados="actualizarDatosOriginales"></update-profile>
+                    <change-password v-if="getMostrarModalActualizarContrasena"></change-password>
+                    <toast></toast>
                     <hr>
                     <div class="row">
                         <div class="col">
@@ -21,9 +23,9 @@
                             <div class="form-group">
                                 <label for="password">Contraseña</label>
                                 <input type="password" name="password" id="password" value="contraseña" class="form-control mb-1" disabled>
-                                <a href="#" class="text-dark">Cambiar contraseña</a>
+                                <a href="#" class="text-dark" @click="asignarMostrarModalActualizarContrasena(true)">Cambiar contraseña</a>
                             </div>
-                            <button class="btn btn-success btn-block" type="submit" :disabled="actualizar" @click="mostrarModal = true"><i class="fas fa-edit mr-2"></i>Actualizar Informacion</button>
+                            <button class="btn btn-success btn-block" type="submit" :disabled="actualizar" @click="asignarMostrarModalActualizarPerfil(true)"><i class="fas fa-edit mr-2"></i>Actualizar Informacion</button>
                         </div>
                     </div>
                 </div>
@@ -35,11 +37,17 @@
 <script>
 import UploadFile from '../components/UploadFile';
 const UpdateProfile = () => import('../components/UpdateProfile');
+const ChangePassword = () => import('../components/ChangePassword');
+import Toast from '../components/Toast';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 export default {
     name: "Profile",
     components: {
         "upload-file": UploadFile,
-        "update-profile": UpdateProfile
+        "update-profile": UpdateProfile,
+        "toast": Toast,
+        "change-password": ChangePassword
     },
     data(){
         return {
@@ -80,17 +88,18 @@ export default {
             }else{
                  this.invalidos.email.state = false;
             }
-        }
+        },
+        actualizarDatosOriginales(){
+            this.datosOriginales.nombre = this.campos.nombre;
+            this.datosOriginales.email = this.campos.email;
+        },
+        ...mapMutations(["asignarMostrarModalActualizarPerfil", "asignarMostrarModalActualizarContrasena"])
     },
     created(){
-        axios.get("/userdata")
-        .then(res => {
-            this.datosOriginales.nombre = res.data.name;
-            this.datosOriginales.email = res.data.email;
-            this.campos.nombre = res.data.name;
-            this.campos.email = res.data.email;
-        })
-        .catch(err => console.log(err));
+            this.datosOriginales.nombre = this.getUserName;
+            this.datosOriginales.email = this.getUserEmail;
+            this.campos.nombre = this.getUserName;
+            this.campos.email = this.getUserEmail;
     },
     computed: {
         verificarNombre() {
@@ -113,7 +122,8 @@ export default {
             }else{
                 return true;
             }
-        }
+        },
+        ...mapGetters(["getMostrarModalActualizarPerfil", "getMostrarModalActualizarContrasena", "getUserName", "getUserEmail"])
     }
 
 }
@@ -131,5 +141,7 @@ export default {
 a{
     font-size: 13.5px;
 }
+
+
 
 </style>

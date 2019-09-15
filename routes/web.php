@@ -11,7 +11,13 @@
 |
 */
 
-// Route::get('/', "VueController@index");
+// Route::get('/', function(){
+//     $posts = App\Post::find(10);
+//     return $posts->comments;
+//     // $comentario = App\Comment::find(1);
+//     // return $comentario->user->name;
+
+// });
 // Route::get("/register", "VueController@index");
 // Route::get("/login", "VueController@index");
 
@@ -30,5 +36,7 @@ Route::get("/isloggedin", function(){
     return response()->json(["message" => "You are logged in"], 200);
 })->middleware("auth:api");
 Route::get("/userdata", "UserController@show")->middleware("auth:api");
+Route::post("/updateuser", "UserController@updateProfile")->middleware("auth:api");
+Route::post("/updatepassword", "UserController@updatePassword")->middleware("auth:api");
 Route::post("/like", "UserController@like")->middleware("auth:api");
 Route::post("/removeLike", "UserController@removeLike")->middleware("auth:api");

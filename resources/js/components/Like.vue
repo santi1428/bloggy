@@ -1,11 +1,10 @@
 <template>
-        <a href="#" id="botonLike" @click.prevent="like" data-toggle="tooltip" data-placement="top" title="Me gusta esta publicación"><i class="mr-2" :class="comprobarMeGusta.class"></i>{{comprobarMeGusta.msg}}</a>
+        <a href="#" id="botonLike" @click.prevent="like" data-toggle="tooltip" data-placement="top"><i class="mr-2" :class="comprobarMeGusta.class"></i>{{comprobarMeGusta.msg}}</a>
         
 </template>
 <script>
 import { mapActions } from 'vuex';
 import { mapGetters } from 'vuex';
-import { mapMutations } from 'vuex';
 export default {
     name: "Like",
     props: ["id"],
@@ -18,18 +17,16 @@ export default {
         like(){
             if(this.liked === false){
                 this.registrarLike(this.id)
-                .then(res => console.log(res))
                 .catch(err => console.log(err));
             }else{
                  this.removerLike(this.id)
                 .then(res => {
-                    this.asignarMensajeToast("Te ha dejado de gustar");
+                    this.asignarDatosToast({msg: "Te ha dejado de gustar", clase: "bg-primary", icono: "fas fa-check-circle"});
                 })
                 .catch(err => console.log(err));
             }
         },
-        ...mapActions(["registrarLike", "removerLike"]),
-        ...mapMutations(["asignarMensajeToast"])
+        ...mapActions(["registrarLike", "removerLike", "asignarDatosToast"]),
     },
     computed: {
         comprobarMeGusta(){
