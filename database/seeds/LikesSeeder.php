@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class PostsSeeder extends Seeder
+class LikesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +11,6 @@ class PostsSeeder extends Seeder
      */
     public function run()
     {
-       factory(App\Post::class, 240)->create();
-
+        factory(App\Like::class, 5000)->create();
     }
 }

@@ -12,7 +12,7 @@ class CommentController extends Controller
 
     public function index($id)
     {
-        return Comment::select('comments.id', 'comments.comment', 'comments.created_at', 'users.image', 'users.name')
+        return Comment::select('comments.id', 'comments.comment', 'comments.created_at', 'users.image', 'users.name', 'users.id AS userId')
         ->join('users', 'comments.UserId', '=', 'users.id')
         ->where('comments.PostId', '=', $id)->orderBy('comments.created_at', 'DESC')->get();
     }
@@ -37,9 +37,10 @@ class CommentController extends Controller
         //
     }
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        $comment = Comment::find($id);
+        $user = User::find($request->user()->id);
+        $comment = $user->comments->find($id);
         $comment->delete();
         return response()->json(["message" => "Se ha eliminado el comentario con éxito!"], 200);       
     }

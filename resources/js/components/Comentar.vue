@@ -49,6 +49,7 @@ export default {
                             clase: "bg-info",
                             icono: "fas fa-comments"
                         });
+                        this.$emit('aumentar-comentarios');
                     }
                 })
                 .catch(err => console.log(err));

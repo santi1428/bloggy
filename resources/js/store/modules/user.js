@@ -198,7 +198,7 @@ const actions = {
     },
     actualizarDatos({ commit }, datos){
         commit('asignarUsuarioImagen', datos.image);
-        localStorage.setItem("User_image", datos.image);
+        localStorage.setItem("user_image", datos.image);
         commit('asignarUsuarioNombre', datos.name); 
         localStorage.setItem("user_name", datos.name);  
         commit('asignarUsuarioEmail', datos.email); 

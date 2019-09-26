@@ -13,9 +13,9 @@
                 <div class="col">
                         <toast></toast>
                         <div class="row">
-                            <div class="col-auto"><img :src="'/storage/profile_images/' + post.user.image" alt="imagen no disponible" id="img-user-post"></div>
+                            <div class="col-auto"><img :src="'/storage/profile_images/' + post.userImage" alt="imagen no disponible" id="img-user-post"></div>
                             <div class="col-auto">
-                                <p class="nombre mb-0">{{ post.user.name }}</p>
+                                <p class="nombre mb-0">{{ post.userName }}</p>
                                 <div class="fecha">{{ mostrarFechaDetallada(post.created_at) }}</div>
                             </div>
                         </div>
@@ -25,18 +25,28 @@
                             </div> 
                         </div>
                         <hr>
-                        <div class="row">
+                        <div v-if="loggedIn" class="row">
                             <div class="col">
-                                <like :id="post.id"></like>
+                                <like :id="post.id" :likes_amount="post.likes_amount"></like>
                             </div>
                         </div>
                         <hr>
                         <div class="row justify-content-center">
                             <div class="col">
-                                <h5>Comentarios</h5>
+                                <h5>Comentarios<span class="badge badge-info ml-2">{{ post.comments_amount }}</span></h5>
                             </div>
                         </div>
-                        <comentar :postId="post.id"></comentar>
+                        <comentar v-if="loggedIn" :postId="post.id" v-on:aumentar-comentarios="post.comments_amount++"></comentar>
+                        <div v-else class="row">
+                            <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
+                                <div class="alert alert-info" role="alert">
+                                    <router-link :to="{name: 'Login'}" class="alert-link">Inicia sesión </router-link> o <router-link :to="{name: 'Register'}" class="alert-link">registrate </router-link>si no tienes cuenta para comentar o dar like
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <hr>
                         <div v-for="comment in getComments" :key="comment.id">
                             <div class="row mt-2 animated fadeIn" id="comment" :class="{'animated fadeOut': comment.id == getMostrarAnimacionEliminarDeComentarioId}">
@@ -51,8 +61,8 @@
                                         <div class="col-auto ml-3">
                                             <div class="fecha text-primary">{{ mostrarFechaRelativa(comment.created_at) }}</div>
                                         </div> 
-                                        <div class="col-auto ml-auto">
-                                            <a href="#" class="btn-eliminar" @click.prevent="eliminarComentario(comment.id)"><i class="fas fa-trash-alt text-danger"></i></a>
+                                        <div class="col-auto ml-auto" v-if="post.userId === parseInt(getUserId) || comment.userId === parseInt(getUserId)">
+                                            <a href="#" class="btn-eliminar" @click.prevent="borrarComentario(comment.id)"><i class="fas fa-trash-alt text-danger"></i></a>
                                         </div>
                                     </div>        
                                     <div class="row">
@@ -120,9 +130,16 @@ export default {
             moment.locale('es');
             let fechaPost = moment(moment.utc(fecha).local()).format("dddd, MMMM D YYYY, h:mm a"); 
             return fechaPost.charAt(0).toUpperCase() + fechaPost.slice(1);
+        },
+        borrarComentario(commentId){
+            this.eliminarComentario(commentId)
+            .then(() => {
+                this.post.comments_amount--;
+            })
+            .catch(err => console.log(err));
         }
     },
-    computed: mapGetters(["getComments", "getMostrarAnimacionEliminarDeComentarioId"]),
+    computed: mapGetters(["getComments", "getMostrarAnimacionEliminarDeComentarioId", "getUserId", "loggedIn"]),
     created(){
          this.traerPublicacion(this.$route.params.id)
          .then(post => { 

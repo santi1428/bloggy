@@ -22,7 +22,7 @@
 // Route::get("/login", "VueController@index");
 
 Route::get('/{pages}', "VueController@index")
-->where('pages', '(|register|login|posts|logout|posts/create|profile)');
+->where('pages', '(|register|login|posts|logout|posts/create|profile|myposts)');
 
 Route::get('posts/{id}', "VueController@index");
 Route::get('posts/update/{id}', "VueController@index");

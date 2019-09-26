@@ -92,7 +92,7 @@ import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
 import { setTimeout } from 'timers';
 export default {
-    name: "Posts",
+    name: "MyPosts",
     components: {
         'options': Option,
         'deletepost': DeletePost,
@@ -106,14 +106,14 @@ export default {
         }
     },
     methods:{
-        ...mapActions(['traerPublicaciones']),
+        ...mapActions(['traerMisPublicaciones']),
         traerPublicacionesConScroll(){
                 const observer = new IntersectionObserver(entries => {
                     entries.forEach(entry => {
                         if(entry.intersectionRatio > -1){
                             if(this.mostrarCargandoPublicaciones === false){                       
                                     this.mostrarCargandoPublicaciones = true;
-                                    this.traerPublicaciones()
+                                    this.traerMisPublicaciones()
                                     .then(() => {
                                         this.mostrarCargandoPublicaciones = false;
                                     })
@@ -152,7 +152,7 @@ export default {
     },
     created(){
         this.resetearPaginacion();
-        this.traerPublicaciones()
+        this.traerMisPublicaciones()
         .then(() => this.traerPublicacionesConScroll())
         .catch(err => console.log(err));
     },

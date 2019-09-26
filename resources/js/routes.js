@@ -9,6 +9,7 @@ const Logout = () => import('./components/Logout');
 const Post = () => import('./views/Post');
 const UpdatePost = () => import('./components/UpdatePost');
 const Profile = () => import('./views/Profile');
+const MyPosts = () => import('./views/MyPosts');
 
 Vue.use(VueRouter);
 
@@ -40,6 +41,14 @@ const router = new VueRouter({
             path: "/posts",
             name: "Posts",
             component: Posts
+        },
+        {
+            path: "/myposts",
+            name: "MyPosts",
+            component: MyPosts,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: "/logout",
