@@ -14,7 +14,7 @@ class CommentController extends Controller
     {
         return Comment::select('comments.id', 'comments.comment', 'comments.created_at', 'users.image', 'users.name', 'users.id AS userId')
         ->join('users', 'comments.UserId', '=', 'users.id')
-        ->where('comments.PostId', '=', $id)->orderBy('comments.created_at', 'DESC')->get();
+        ->where('comments.PostId', '=', $id)->orderBy('comments.created_at', 'DESC')->paginate(5);
     }
 
     public function store(Request $request)
@@ -24,12 +24,12 @@ class CommentController extends Controller
         $postId = $request->input("postId");
         $comment = $request->input('comment');
         $user = User::find($userId);
-        $user->comments()->create([
+        $comment = $user->comments()->create([
             'comment' => $comment,
             'PostId' => $postId
         ]);
 
-        return response()->json(["msg" => "todo salio bien", "data" => $request->comment]);
+        return response()->json(["msg" => "todo salio bien", "comment" => $comment]);
     }
 
     public function update(Request $request, $id)

@@ -69,15 +69,14 @@
  <div v-else>
         <div class="row mt-5">
             <div class="col">
-                <h5 class="text-dark text-center">
+                <h5 class="text-dark text-center" id="cargando">
                   <i class="fa fa-spinner fa-pulse fa-fw mr-2"></i>Cargando publicaciones
                </h5>
             </div>
         </div>
 </div>
 <toast></toast>
-<div id="infinite-scroll-trigger">
-</div>
+<div id="infinite-scroll-trigger"></div>
 </div>
 </template>
 
@@ -148,10 +147,10 @@ export default {
             let fechaLocal = moment.utc(fecha).local();
             return fechaLocal.fromNow();
         },
-        ...mapMutations(["resetearPaginacion"])
+        ...mapMutations(["resetearPaginacionDePosts"])
     },
     created(){
-        this.resetearPaginacion();
+        this.resetearPaginacionDePosts();
         this.traerPublicaciones()
         .then(() => this.traerPublicacionesConScroll())
         .catch(err => console.log(err));

@@ -1,19 +1,9 @@
 <template>
 <div class="container" id="contenedor">
  <title>Publicaciones</title>
- <div v-if="loggedIn" class="row justify-content-end mt-4 mb-3">
+ <div class="row justify-content-end mt-4 mb-3">
      <div class="col-12 col-sm-6 col-lg-3">
             <router-link :to="{name: 'CreatePost'}" id="boton-crear"><i class="fas fa-pen-alt mr-2"></i>Crear publicación</router-link>
-     </div>
- </div>
-  <div v-else class="row justify-content-center mt-4 mb-3">
-     <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
-            <div class="alert alert-info" role="alert">
-                <router-link :to="{name: 'Login'}" class="alert-link">Inicia sesión </router-link> o <router-link :to="{name: 'Register'}" class="alert-link">registrate </router-link>si no tienes cuenta para publicar 
-                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
      </div>
  </div>
  <div v-if="getPosts!==null">
@@ -32,11 +22,11 @@
                                 <div class="col post-body" v-html="post.body">
                                 </div>
                             </div> 
-                    <options class="options" v-if="post.userId === parseInt(getUserId)" v-bind:id="post.id"></options>
+                    <options class="options" v-bind:id="post.id"></options>
                     </div>
                 </div>
                 <div class="row my-2">
-                    <div v-if="loggedIn" class="col-auto">
+                    <div class="col-auto">
                         <like :id="post.id" :likes_amount="post.likes_amount"></like>
                     </div>
                     <div class="col-auto">
@@ -61,7 +51,7 @@
     <div v-else>
         <div class="row mt-5">
             <div class="col-md-6 mx-auto">
-                <h3 class="text-dark">No hay publicaciones. Se el primero en publicar!</h3>
+                <h3 class="text-dark">No tienes publicaciones, publica algo!</h3>
             </div>
         </div>
     </div>
@@ -148,17 +138,17 @@ export default {
             let fechaLocal = moment.utc(fecha).local();
             return fechaLocal.fromNow();
         },
-        ...mapMutations(["resetearPaginacion"])
+        ...mapMutations(["resetearPaginacionDePosts"])
     },
     created(){
-        this.resetearPaginacion();
+        this.resetearPaginacionDePosts();
         this.traerMisPublicaciones()
         .then(() => this.traerPublicacionesConScroll())
         .catch(err => console.log(err));
     },
     computed: 
     {
-        ...mapGetters(["loggedIn", "getPosts", "getUserId", "getMostrarModalEliminarDePostId", "getMostrarAnimacionPublicarDePostId", "getMostrarAnimacionEliminarDePostId"]),
+        ...mapGetters(["getPosts", "getMostrarModalEliminarDePostId", "getMostrarAnimacionPublicarDePostId", "getMostrarAnimacionEliminarDePostId"]),
     },
     mounted(){
         // alert(window.innerHeight);

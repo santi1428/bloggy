@@ -1,7 +1,7 @@
 const state = {
     posts: null,
-    page: 0,
-    lastPage: 1,
+    postsPage: 0,
+    lastPostsPage: 1,
     mostrarModalEliminarDePostId: "",
     mostrarAnimacionPublicarDePostId: "",
     mostrarAnimacionEliminarDePostId: ""
@@ -11,11 +11,11 @@ const getters = {
 getPosts(state){
     return state.posts;
 },
-getPage(state){
-    return state.page;
+getPostsPage(state){
+    return state.postsPage;
 },
-getLastPage(state){
-    return state.lastPage;
+getLastPostsPage(state){
+    return state.lastPostsPage;
 },
 getMostrarModalEliminarDePostId(state){
     return state.mostrarModalEliminarDePostId;
@@ -38,15 +38,15 @@ const mutations = {
     removerPublicacion(state, id){
         state.posts = state.posts.filter(post => post.id !== id);   
     },
-    aumentarNumeroPagina(state){
-        state.page++;
+    aumentarNumeroPaginaPosts(state){
+        state.postsPage++;
     },
-    asignarUltimaPagina(state, lastPage){
-        state.lastPage = lastPage;
+    asignarUltimaPaginaPosts(state, lastPostsPage){
+        state.lastPostsPage = lastPostsPage;
     },
-    resetearPaginacion(state){
-        state.page = 0;
-        state.lastPage = 1;
+    resetearPaginacionDePosts(state){
+        state.postsPage = 0;
+        state.lastPostsPage = 1;
         state.posts = null;
     },
     mostrarModalEliminarDePostId(state, id){
@@ -86,12 +86,12 @@ const actions = {
     },
     traerPublicaciones({ commit, getters, dispatch }){
         return new Promise((resolve, reject) => {
-            if(getters.getPage <= getters.getLastPage){
-                axios.get(`/api/posts?page=${getters.getPage}`)
+            if(getters.getPostsPage <= getters.getLastPostsPage){
+                axios.get(`/api/posts?page=${getters.getPostsPage}`)
                 .then(res => {
                     if(res.status === 200){
-                        commit('aumentarNumeroPagina');
-                        commit("asignarUltimaPagina", res.data.last_page);
+                        commit('aumentarNumeroPaginaPosts');
+                        commit("asignarUltimaPaginaPosts", res.data.last_page);
                         dispatch('anadirPublicaciones', res.data.data);
                         resolve();
                     }
@@ -106,13 +106,13 @@ const actions = {
     },
     traerMisPublicaciones({ commit, getters, dispatch }){
         return new Promise((resolve, reject) => {
-            if(getters.getPage <= getters.getLastPage){
-                axios.get(`/api/getmyposts?page=${getters.getPage}`)
+            if(getters.getPostsPage <= getters.getLastPostsPage){
+                axios.get(`/api/getmyposts?page=${getters.getPostsPage}`)
                 .then(res => {
                     console.log(res);
                     if(res.status === 200){
-                        commit('aumentarNumeroPagina');
-                        commit("asignarUltimaPagina", res.data.last_page);
+                        commit('aumentarNumeroPaginaPosts');
+                        commit("asignarUltimaPaginaPosts", res.data.last_page);
                         dispatch('anadirPublicaciones', res.data.data);
                         resolve();
                     }

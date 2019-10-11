@@ -48,32 +48,51 @@
                             </div>
                         </div>
                         <hr>
-                        <div v-for="comment in getComments" :key="comment.id">
-                            <div class="row mt-2 animated fadeIn" id="comment" :class="{'animated fadeOut': comment.id == getMostrarAnimacionEliminarDeComentarioId}">
-                                <div class="col-auto">
-                                        <img :src="'/storage/profile_images/' + comment.image" alt="imagen no disponible" id="img-user-comment">
-                                </div>
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col-auto">
-                                            <p class="nombre m-0 text-dark"><strong>{{ comment.name }}</strong></p>
-                                        </div>
-                                        <div class="col-auto ml-3">
-                                            <div class="fecha text-primary">{{ mostrarFechaRelativa(comment.created_at) }}</div>
-                                        </div> 
-                                        <div class="col-auto ml-auto" v-if="post.userId === parseInt(getUserId) || comment.userId === parseInt(getUserId)">
-                                            <a href="#" class="btn-eliminar" @click.prevent="borrarComentario(comment.id)"><i class="fas fa-trash-alt text-danger"></i></a>
-                                        </div>
-                                    </div>        
-                                    <div class="row">
-                                        <div class="col-auto">
-                                                <p class="comment">{{comment.comment}}</p>
+                        <div v-if="getComments!==null">
+                            <div v-for="comment in getComments" :key="comment.id">
+                                <div class="row mt-2 animated fadeIn" id="comment" :class="{'animated fadeOut': comment.id == getMostrarAnimacionEliminarDeComentarioId}">
+                                    <div class="col-auto">
+                                            <img :src="'/storage/profile_images/' + comment.image" alt="imagen no disponible" id="img-user-comment">
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <p class="nombre m-0 text-dark"><strong>{{ comment.name }}</strong></p>
+                                            </div>
+                                            <div class="col-auto ml-3">
+                                                <div class="fecha text-primary">{{ mostrarFechaRelativa(comment.created_at) }}</div>
+                                            </div> 
+                                            <div class="col-auto ml-auto" v-if="post.userId === parseInt(getUserId) || comment.userId === parseInt(getUserId)">
+                                                <a href="#" class="btn-eliminar" @click.prevent="borrarComentario(comment.id)"><i class="fas fa-trash-alt text-danger"></i></a>
+                                            </div>
+                                        </div>        
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                    <p class="comment">{{comment.comment}}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
                             </div>
-                            <hr>
+                            <div class="row my-5" v-if="mostrarCargandoComentarios">
+                                <div class="col">
+                                    <h5 class="text-dark text-center" id="cargando">
+                                            <i class="fa fa-spinner fa-pulse fa-fw mr-1"></i>Cargando comentarios 
+                                    </h5>
+                                </div>
+                            </div>
                         </div>
+                        <div v-else>
+                            <div class="row mt-5">
+                                <div class="col">
+                                    <h5 class="text-dark text-center" id="cargando">
+                                    <i class="fa fa-spinner fa-pulse fa-fw mr-2"></i>Cargando comentarios
+                                </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="infinite-scroll-trigger"></div>
                 </div>
             </div>
         </div>
@@ -99,10 +118,12 @@ export default {
     },
     data(){
         return {
-           post: null
+           post: null,
+           mostrarCargandoComentarios: false,
         }   
     },
     methods: {
+        ...mapMutations(["resetearPaginacionDeComentarios"]),
         ...mapActions(["traerPublicacion", "traerComentarios", "eliminarComentario"]),
         mostrarFechaRelativa(fecha){
             moment.updateLocale('es', {
@@ -137,21 +158,43 @@ export default {
                 this.post.comments_amount--;
             })
             .catch(err => console.log(err));
+        },
+        traerComentariosConScroll(){
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if(entry.intersectionRatio > -1){
+                        if(this.mostrarCargandoComentarios === false){                       
+                                this.mostrarCargandoComentarios = true;
+                                this.traerComentarios(this.post.id)
+                                .then(() => {
+                                    this.mostrarCargandoComentarios = false;
+                                })
+                                .catch(() => {
+                                    this.mostrarCargandoComentarios = false;
+                                });
+                        }
+                    }
+                })
+            });
+            observer.observe(document.getElementById("infinite-scroll-trigger"));
         }
     },
     computed: mapGetters(["getComments", "getMostrarAnimacionEliminarDeComentarioId", "getUserId", "loggedIn"]),
     created(){
          this.traerPublicacion(this.$route.params.id)
          .then(post => { 
-             this.post = post;
-                this.traerComentarios(this.post.id)
-                .then(res => console.log(this.getComments))
-                .catch(err => console.log(err));
+            this.post = post;
+            // console.log(this.post);
+            this.resetearPaginacionDeComentarios();
+            this.traerComentarios(post.id)
+            .then(() => {
+                this.traerComentariosConScroll()
+            })
+            .catch(err => console.log(err));
          })
          .catch(err => this.$router.push({name: "Posts"}));
     },
     mounted(){
-
     }
 }
 </script>
@@ -197,6 +240,16 @@ export default {
 
     .btn-eliminar{
         font-size: 18px;
+    }
+
+
+    #cargando{
+        font-size: 1rem;
+    }
+
+
+    #infinite-scroll-trigger{
+        height: 1px;
     }
 
 </style>
