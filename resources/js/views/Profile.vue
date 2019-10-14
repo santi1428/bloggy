@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <title>Mi perfil</title>
         <div class="row justify-content-center mt-2">
             <div class="col-lg-4 card shadow-lg rounded">
                 <div class="card-body">

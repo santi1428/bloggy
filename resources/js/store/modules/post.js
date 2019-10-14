@@ -4,7 +4,8 @@ const state = {
     lastPostsPage: 1,
     mostrarModalEliminarDePostId: "",
     mostrarAnimacionPublicarDePostId: "",
-    mostrarAnimacionEliminarDePostId: ""
+    mostrarAnimacionEliminarDePostId: "",
+    filtro: 0
 };
 
 const getters = {
@@ -25,15 +26,18 @@ getMostrarAnimacionPublicarDePostId(state){
 },
 getMostrarAnimacionEliminarDePostId(state){
     return state.mostrarAnimacionEliminarDePostId;
+},
+getFiltro(state){
+    return state.filtro;
 }
 };
 
 const mutations = {
     agregarPublicaciones(state, publicaciones){
         state.posts = publicaciones;
-        state.posts.sort(function(a,b){
-            return new Date(b.created_at) - new Date(a.created_at);
-        });
+        // state.posts.sort(function(a,b){
+        //     return new Date(b.created_at) - new Date(a.created_at);
+        // });
     },
     removerPublicacion(state, id){
         state.posts = state.posts.filter(post => post.id !== id);   
@@ -60,6 +64,9 @@ const mutations = {
     },
     asignarMostrarAnimacionEliminarDePostId(state, id){
         state.mostrarAnimacionEliminarDePostId = id;
+    },
+    asignarFiltro(state, filtro){
+        state.filtro = filtro;
     }
 };
 
@@ -87,7 +94,7 @@ const actions = {
     traerPublicaciones({ commit, getters, dispatch }){
         return new Promise((resolve, reject) => {
             if(getters.getPostsPage <= getters.getLastPostsPage){
-                axios.get(`/api/posts?page=${getters.getPostsPage}`)
+                axios.get(`/api/posts/filtro/${getters.getFiltro}?page=${getters.getPostsPage}`)
                 .then(res => {
                     if(res.status === 200){
                         commit('aumentarNumeroPaginaPosts');
@@ -107,7 +114,7 @@ const actions = {
     traerMisPublicaciones({ commit, getters, dispatch }){
         return new Promise((resolve, reject) => {
             if(getters.getPostsPage <= getters.getLastPostsPage){
-                axios.get(`/api/getmyposts?page=${getters.getPostsPage}`)
+                axios.get(`/api/getmyposts/filtro/${getters.getFiltro}?page=${getters.getPostsPage}`)
                 .then(res => {
                     console.log(res);
                     if(res.status === 200){

@@ -1,5 +1,6 @@
 <template>
 <div class="container">
+    <title>{{ tituloPublicacion }}</title>
     <div class="row justify-content-center">
         <div class="col">
             <div class="row justify-content-center mt-5" v-if="post == null">
@@ -170,7 +171,7 @@ export default {
                                     this.mostrarCargandoComentarios = false;
                                 })
                                 .catch(() => {
-                                    this.mostrarCargandoComentarios = false;
+                                    this.mostrarCargandoComentarios = true;
                                 });
                         }
                     }
@@ -179,7 +180,17 @@ export default {
             observer.observe(document.getElementById("infinite-scroll-trigger"));
         }
     },
-    computed: mapGetters(["getComments", "getMostrarAnimacionEliminarDeComentarioId", "getUserId", "loggedIn"]),
+    computed: {
+        ...mapGetters(["getComments", "getMostrarAnimacionEliminarDeComentarioId", "getUserId", "loggedIn"]),
+        tituloPublicacion(){
+            if(this.post != null){
+                let str = this.post.body.length <= 60 ? "" : "...";
+                return this.post.body.replace(/<\/?[^>]+(>|$)/g, "").substr(0, 60) + str;
+            }else{
+                return "";
+            }
+        }
+    },
     created(){
          this.traerPublicacion(this.$route.params.id)
          .then(post => { 

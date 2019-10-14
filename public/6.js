@@ -191,6 +191,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 var UpdateProfile = function UpdateProfile() {
@@ -657,6 +658,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
+    _c("title", [_vm._v("Mi perfil")]),
+    _vm._v(" "),
     _c("div", { staticClass: "row justify-content-center mt-2" }, [
       _c("div", { staticClass: "col-lg-4 card shadow-lg rounded" }, [
         _c(

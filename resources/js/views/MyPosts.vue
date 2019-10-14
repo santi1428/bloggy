@@ -1,9 +1,12 @@
 <template>
 <div class="container" id="contenedor">
- <title>Publicaciones</title>
- <div class="row justify-content-end mt-4 mb-3">
-     <div class="col-12 col-sm-6 col-lg-3">
-            <router-link :to="{name: 'CreatePost'}" id="boton-crear"><i class="fas fa-pen-alt mr-2"></i>Crear publicación</router-link>
+ <title>Mis Publicaciones</title>
+ <div class="row justify-content-between mt-4 mb-3">
+     <div class="col-auto mr-auto">
+        <filtrar v-on:filtro-cambiado="resetearPaginacionDePosts(); traerMisPublicaciones();"></filtrar>
+     </div>
+     <div class="col-auto col-sm-6 col-lg-3">
+        <router-link :to="{name: 'CreatePost'}" id="boton-crear"><i class="fas fa-pen-alt mr-2"></i>Crear publicación</router-link>
      </div>
  </div>
  <div v-if="getPosts!==null">
@@ -81,13 +84,15 @@ import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
 import { setTimeout } from 'timers';
+import Filtrar from '../components/Filtrar';
 export default {
     name: "MyPosts",
     components: {
         'options': Option,
         'deletepost': DeletePost,
         'like': Like,
-        'toast': Toast
+        'toast': Toast,
+        'filtrar': Filtrar
     },
     data(){
         return {
@@ -108,7 +113,7 @@ export default {
                                         this.mostrarCargandoPublicaciones = false;
                                     })
                                     .catch(() => {
-                                        this.mostrarCargandoPublicaciones = false;
+                                        this.mostrarCargandoPublicaciones = true;
                                     });
                             }
                         }

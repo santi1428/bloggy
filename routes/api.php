@@ -24,7 +24,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post("/posts", "API\PostController@store")->name("posts.store");
     Route::put("/posts/{post}", "API\PostController@update")->name("posts.update");
     Route::delete("/posts/{post}", "API\PostController@destroy")->name("posts.destroy");
-    Route::get("/getmyposts", "API\PostController@getMyPosts")->name("posts.myposts");
+    Route::get("/getmyposts/filtro/{filtro}", "API\PostController@getMyPostsByFilter")->name("posts.getMyPostsByFilter");
     Route::get('verifypostowner/{id}', "API\PostController@verifyPostOwner");
     
     //Comments api routes
@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::delete("/comments/{comment}", "API\CommentController@destroy")->name("comments.destroy");
 });
 
-Route::get("/posts", "API\PostController@index")->name("posts.index");
+Route::get("/posts/filtro/{filtro}", "API\PostController@showPostsByFilter")->name("posts.showPostsByFilter");
 Route::get("/posts/{id}", "API\PostController@show")->name("posts.show");
 Route::get("/comments/{id}", "API\CommentController@index")->name("comments.index");
 

@@ -11,10 +11,28 @@ use Illuminate\Support\Facades\DB;
 class PostController extends Controller
 {
 
-    public function index(Request $request)
+    public function showPostsByFilter(Request $request, $filtro)
     {
-        return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->orderBy("created_at", "desc")->paginate(5), 200);
+        switch((int)$filtro){
+            case 0: 
+                 return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->orderBy("created_at", "desc")->paginate(5), 200);
+                 break;
+            case 1: 
+                return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->orderBy("created_at", "asc")->paginate(5), 200);
+                break;
+            case 2: 
+                return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->orderBy("likes_amount", "desc")->paginate(5), 200);
+                break;
+            case 3:
+                return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->orderBy("comments_amount", "desc")->paginate(5), 200);
+                break;
+            default: 
+                return response()->json(["msg" => "No se ha especificado el filtro"], 400);
+        }
+
     }
+
+
 
     public function store(Request $request)
     {
@@ -30,7 +48,6 @@ class PostController extends Controller
     public function show($id)
     {
         return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->where("posts.id", $id)->get(), 200);
-        // return response()->json(Post::select('id', 'body', 'created_at', 'user_id')->with('user:id,name,email,image')->where("id", $id)->get());
     }
 
 
@@ -46,6 +63,10 @@ class PostController extends Controller
     {
         $user = User::find($request->user()->id);
         $post = $user->posts->find($post);
+        foreach($post->comments as $comment){
+            $comment->delete();
+        }
+        DB::table("likes")->where('PostId', $post->id)->delete();
         $post->delete();
         return response()->json(["message" => "Se ha eliminado la publicación con éxito!"], 200);       
     }
@@ -61,9 +82,24 @@ class PostController extends Controller
     }
 
 
-    public function getMyPosts(Request $request){
+    public function getMyPostsByFilter(Request $request, $filtro){
         $userId = $request->user()->id;
-        return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->where('posts.user_id', $userId)->orderBy("created_at", "desc")->paginate(5), 200);
+        switch((int)$filtro){
+            case 0: 
+                return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->where('posts.user_id', $userId)->orderBy("created_at", "desc")->paginate(5), 200);
+                break;
+            case 1:
+                return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->where('posts.user_id', $userId)->orderBy("created_at", "asc")->paginate(5), 200); 
+                break;
+            case 2: 
+                return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->where('posts.user_id', $userId)->orderBy("likes_amount", "desc")->paginate(5), 200);
+                break;
+            case 3:
+                return response()->json(Post::select('posts.id', DB::raw('(SELECT COUNT(*) FROM comments WHERE PostId = posts.id) AS comments_amount'), DB::raw('(SELECT COUNT(*) FROM likes WHERE PostId = posts.id) AS likes_amount'), 'posts.body', 'posts.created_at', 'posts.user_id as userId', 'users.name as userName', 'users.email as userEmail', 'users.image as userImage')->join('users', 'posts.user_id', '=', 'users.id')->where('posts.user_id', $userId)->orderBy("comments_amount", "desc")->paginate(5), 200);
+                break;
+            default: 
+                return response()->json(["msg" => "No se ha especificado el filtro"], 400);
+        }
     }
 
 

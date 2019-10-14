@@ -44,7 +44,7 @@
                     this.guardarPublicacion(publicacion)
                     .then(() => {
                         this.button = 0;
-                        this.$router.push({name: "Posts"});   
+                        this.$router.go(-1);
                         setTimeout(() => {
                             this.asignarDatosToast({msg: "Se ha creado la publicación", clase: "bg-success", icono: "fas fa-check-circle"})
                         }, 100);

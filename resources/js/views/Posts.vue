@@ -2,7 +2,10 @@
 <div class="container" id="contenedor">
  <title>Publicaciones</title>
  <div v-if="loggedIn" class="row justify-content-end mt-4 mb-3">
-     <div class="col-12 col-sm-6 col-lg-3">
+     <div class="col-auto mr-auto">
+         <filtrar v-on:filtro-cambiado="resetearPaginacionDePosts(); traerPublicaciones();"></filtrar>
+     </div>
+     <div class="col-auto col-sm-6 col-lg-3">
             <router-link :to="{name: 'CreatePost'}" id="boton-crear"><i class="fas fa-pen-alt mr-2"></i>Crear publicación</router-link>
      </div>
  </div>
@@ -86,6 +89,7 @@ const DeletePost = () => import('../components/DeletePost');
 import Toast from '../components/Toast';
 import Like from '../components/Like';
 import moment from 'moment';
+import Filtrar from '../components/Filtrar';
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
@@ -96,7 +100,8 @@ export default {
         'options': Option,
         'deletepost': DeletePost,
         'like': Like,
-        'toast': Toast
+        'toast': Toast,
+        'filtrar': Filtrar
     },
     data(){
         return {
@@ -117,7 +122,7 @@ export default {
                                         this.mostrarCargandoPublicaciones = false;
                                     })
                                     .catch(() => {
-                                        this.mostrarCargandoPublicaciones = false;
+                                        this.mostrarCargandoPublicaciones = true;
                                     });
                             }
                         }
@@ -176,8 +181,7 @@ export default {
         font-size: 1rem;
         transition: 0.2s;
     }
- 
-
+    
 
     /* .fade {
       transition: opacity 0.3s linear !important;

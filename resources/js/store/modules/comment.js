@@ -40,11 +40,6 @@ const mutations = {
     },
     agregarComentarios(state, comentarios){
         state.comments = comentarios;
-    },
-    ordenarComentariosPorFechaAsc(state){
-        state.comments.sort(function(a,b){
-            return new Date(b.created_at) - new Date(a.created_at);
-        });
     }
 }
 
@@ -58,8 +53,7 @@ const actions = {
             })
             .then(res => {
                 console.log(res.data);
-                state.comments.push({ id: res.data.comment.id, comment: res.data.comment.comment, created_at: res.data.comment.created_at, userId: res.data.comment.UserId, name: getters.getUserName, image: getters.getUserImage });
-                commit("ordenarComentariosPorFechaAsc");
+                state.comments.unshift({ id: res.data.comment.id, comment: res.data.comment.comment, created_at: res.data.comment.created_at, userId: res.data.comment.UserId, name: getters.getUserName, image: getters.getUserImage });
                 resolve(res);
             })
             .catch(err => reject(err))
@@ -100,7 +94,7 @@ const actions = {
             commit("agregarComentarios", comentariosNuevos);
             console.log("Comentarios nuevos", comentariosNuevos);
         }
-        commit("ordenarComentariosPorFechaAsc");
+        
     },
     eliminarComentario({commit, dispatch}, commentId){
         return new Promise((resolve, reject) => {

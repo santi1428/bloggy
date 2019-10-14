@@ -65,9 +65,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.guardarPublicacion(publicacion).then(function () {
           _this.button = 0;
 
-          _this.$router.push({
-            name: "Posts"
-          });
+          _this.$router.go(-1);
 
           setTimeout(function () {
             _this.asignarDatosToast({
