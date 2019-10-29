@@ -247,7 +247,7 @@ var render = function() {
             ? _c("div", { staticClass: "row" }, [_vm._m(0)])
             : _vm._e(),
           _vm._v(" "),
-          _c("div", { staticClass: "card mx-auto my-auto" }, [
+          _c("div", { staticClass: "card mx-auto my-auto animated fadeIn" }, [
             _c(
               "div",
               { staticClass: "card-header bg-dark text-white text-center" },
@@ -297,9 +297,11 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(_vm._s(_vm.verificarCorreo))
-                  ])
+                  _c(
+                    "div",
+                    { staticClass: "invalid-feedback animated fadeIn" },
+                    [_vm._v(_vm._s(_vm.verificarCorreo))]
+                  )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
@@ -334,9 +336,11 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c("div", { staticClass: "invalid-feedback" }, [
-                    _vm._v(_vm._s(_vm.verificarContrasena))
-                  ])
+                  _c(
+                    "div",
+                    { staticClass: "invalid-feedback animated fadeIn" },
+                    [_vm._v(_vm._s(_vm.verificarContrasena))]
+                  )
                 ]),
                 _vm._v(" "),
                 _c(

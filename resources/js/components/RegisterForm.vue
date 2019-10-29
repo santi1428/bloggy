@@ -2,7 +2,7 @@
 <div class="container">
 <title>Registro</title>
 <div class="row justify-content-center mt-5">
-    <div class="card px-0 col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+    <div class="card px-0 col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4 animated fadeIn">
     <div class="card-header bg-dark text-white text-center">
         Formulario de registro
     </div>
@@ -10,22 +10,22 @@
         <div class="form-group">
             <label for="nombre">Nombre</label>
             <input type="text" name="nombre" v-model="campos.nombre" placeholder="Ingrese su nombre" class="form-control" v-bind:class="{'is-invalid': this.invalidos.nombre}" required>
-            <div class="invalid-feedback">{{ verificarNombre }}</div>
+            <div class="invalid-feedback animated fadeIn">{{ verificarNombre }}</div>
         </div>
         <div class="form-group">
             <label for="correo">Correo</label>
             <input @input="verificarCorreo" type="email" name="correo" v-model="campos.correo" placeholder="Ingrese su correo" class="form-control" v-bind:class="{'is-invalid': this.invalidos.correo.state}" required>
-            <div class="invalid-feedback">{{ invalidos.correo.msg }}</div>
+            <div class="invalid-feedback animated fadeIn">{{ invalidos.correo.msg }}</div>
         </div>
         <div class="form-group">
             <label for="contrasena">Contraseña</label>
             <input type="password" name="contrasena" v-model="campos.contrasena" placeholder="Ingrese su contraseña" class="form-control" v-bind:class="{'is-invalid': this.invalidos.contrasena}" required>
-            <div class="invalid-feedback">{{ verificarContrasena }}</div>
+            <div class="invalid-feedback animated fadeIn">{{ verificarContrasena }}</div>
         </div>
         <div class="form-group">
             <label for="concontrasena">Confirme su contraseña</label>
             <input type="password" name="concontrasena" v-model="campos.concontrasena" placeholder="Vuelva a ingresar su contraseña" class="form-control" v-bind:class="{'is-invalid': this.invalidos.concontrasena}" required>
-            <div class="invalid-feedback">{{ verificarConContrasena }}</div>
+            <div class="invalid-feedback animated fadeIn">{{ verificarConContrasena }}</div>
         </div>
            <button type="submit" class="btn btn-dark btn-block" :disabled="button === 1"><span v-if="button === 1" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span v-if="button === 0"><i class="fas fa-user-plus mr-2"></i>Registrarse</span><span v-else>Registrandose...</span></button>

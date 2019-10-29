@@ -10,7 +10,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card mx-auto my-auto">          
+            <div class="card mx-auto my-auto animated fadeIn">          
             <div class="card-header bg-dark text-white text-center">
                 Login
             </div>
@@ -18,12 +18,12 @@
                 <div class="form-group">
                     <label for="correo">Correo</label>
                     <input type="email" v-model="campos.correo"  class="form-control form-control" :class="{'is-invalid':invalidos.correo}" placeholder="Ingrese su correo" required>
-                    <div class="invalid-feedback">{{ verificarCorreo }}</div>
+                    <div class="invalid-feedback animated fadeIn">{{ verificarCorreo }}</div>
                 </div>
                 <div class="form-group">
                     <label for="contrasena">Contraseña</label>
                     <input type="password" v-model="campos.contrasena"  class="form-control form-control" :class="{'is-invalid':invalidos.contrasena}" placeholder="Ingrese su contraseña" required>
-                    <div class="invalid-feedback">{{ verificarContrasena }}</div>
+                    <div class="invalid-feedback animated fadeIn">{{ verificarContrasena }}</div>
                 </div>
                 <router-link :to="'register'" class="text-danger d-block mb-2">¿No tienes cuenta? Registrate!</router-link>
                  <button type="submit" class="btn btn-dark btn-block" :disabled="button === 1 || submit === false"><span v-if="button === 1" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

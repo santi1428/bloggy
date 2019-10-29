@@ -418,7 +418,10 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center mt-5" }, [
       _c(
         "div",
-        { staticClass: "card px-0 col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4" },
+        {
+          staticClass:
+            "card px-0 col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4 animated fadeIn"
+        },
         [
           _c(
             "div",
@@ -469,7 +472,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("div", { staticClass: "invalid-feedback" }, [
+                _c("div", { staticClass: "invalid-feedback animated fadeIn" }, [
                   _vm._v(_vm._s(_vm.verificarNombre))
                 ])
               ]),
@@ -508,7 +511,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("div", { staticClass: "invalid-feedback" }, [
+                _c("div", { staticClass: "invalid-feedback animated fadeIn" }, [
                   _vm._v(_vm._s(_vm.invalidos.correo.msg))
                 ])
               ]),
@@ -546,7 +549,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("div", { staticClass: "invalid-feedback" }, [
+                _c("div", { staticClass: "invalid-feedback animated fadeIn" }, [
                   _vm._v(_vm._s(_vm.verificarContrasena))
                 ])
               ]),
@@ -584,7 +587,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("div", { staticClass: "invalid-feedback" }, [
+                _c("div", { staticClass: "invalid-feedback animated fadeIn" }, [
                   _vm._v(_vm._s(_vm.verificarConContrasena))
                 ])
               ]),
