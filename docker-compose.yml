@@ -1,0 +1,20 @@
+version: '3'
+services: 
+  app: 
+    container_name: bloggy_docker_container
+    restart: always
+    build: .
+    ports:
+      - '80:3000'
+    volumes: 
+      - ./ /var/www/html/bloggy
+  mysql: 
+    container_name: mysql_db
+    image: mysql
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=21830818'
+      - 'MYSQL_DATABASE=Bloggy'
+      - 'MYSQL_USER=santi1428'
+      - 'MYSQL_PASSWORD=21830818'
+    ports: 
+      - '3306:3306'
