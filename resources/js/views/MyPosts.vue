@@ -79,7 +79,7 @@ import Option from '../components/Option';
 const DeletePost = () => import('../components/DeletePost');
 import Toast from '../components/Toast';
 import Like from '../components/Like';
-import moment from 'moment';
+// import moment from 'moment';
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';

@@ -105,7 +105,7 @@
 <script>
 import Like from '../components/Like';
 import Comentar from '../components/Comentar';
-import moment from 'moment';
+// import moment from 'moment';
 import Toast from '../components/Toast';
 import { mapActions } from 'vuex';
 import { mapGetters } from 'vuex';
