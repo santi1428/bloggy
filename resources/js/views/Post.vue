@@ -37,7 +37,7 @@
                                 <h5>Comentarios<span class="badge badge-info ml-2">{{ post.comments_amount }}</span></h5>
                             </div>
                         </div>
-                        <comentar v-if="loggedIn" :postId="post.id" v-on:aumentar-comentarios="post.comments_amount++"></comentar>
+                        <comment v-if="loggedIn" :postId="post.id" v-on:aumentar-comentarios="post.comments_amount++"></comment>
                         <div v-else class="row">
                             <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
                                 <div class="alert alert-info" role="alert">
@@ -104,8 +104,7 @@
 
 <script>
 import Like from '../components/Like';
-import Comentar from '../components/Comentar';
-import moment from 'moment';
+import Comment from '../components/Comment';
 import Toast from '../components/Toast';
 import { mapActions } from 'vuex';
 import { mapGetters } from 'vuex';
@@ -114,7 +113,7 @@ export default {
     name: 'Post',
     components: {
         "like": Like,
-        "comentar": Comentar,
+        "comment": Comment,
         "toast": Toast
     },
     data(){

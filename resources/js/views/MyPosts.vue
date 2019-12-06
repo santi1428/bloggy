@@ -3,7 +3,7 @@
  <title>Mis Publicaciones</title>
  <div class="row justify-content-between mt-4 mb-3">
      <div class="col-auto mr-auto">
-        <filtrar v-on:filtro-cambiado="resetearPaginacionDePosts(); traerMisPublicaciones();"></filtrar>
+        <filter-posts v-on:filtro-cambiado="resetearPaginacionDePosts(); traerMisPublicaciones();"></filter-posts>
      </div>
      <div class="col-auto col-sm-6 col-lg-3">
         <router-link :to="{name: 'CreatePost'}" id="boton-crear"><i class="fas fa-pen-alt mr-2"></i>Crear publicación</router-link>
@@ -79,12 +79,11 @@ import Option from '../components/Option';
 const DeletePost = () => import('../components/DeletePost');
 import Toast from '../components/Toast';
 import Like from '../components/Like';
-import moment from 'moment';
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
 import { setTimeout } from 'timers';
-import Filtrar from '../components/Filtrar';
+import FilterPosts from '../components/FilterPosts';
 export default {
     name: "MyPosts",
     components: {
@@ -92,7 +91,7 @@ export default {
         'deletepost': DeletePost,
         'like': Like,
         'toast': Toast,
-        'filtrar': Filtrar
+        'filter-posts': FilterPosts
     },
     data(){
         return {
