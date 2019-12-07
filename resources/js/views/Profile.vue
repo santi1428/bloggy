@@ -2,7 +2,7 @@
     <div class="container">
         <title>Mi perfil</title>
         <div class="row justify-content-center mt-2">
-            <div class="col-lg-4 card shadow-lg rounded">
+            <div class="col-lg-4" :class="{'card shadow-lg rounded': mostrarTargeta }">
                 <div class="card-body">
                     <upload-file></upload-file>
                     <update-profile v-if="getMostrarModalActualizarPerfil" :campos="campos" v-on:datos-actualizados="actualizarDatosOriginales"></update-profile>
@@ -113,6 +113,13 @@ export default {
                 }
             }
         },
+        mostrarTargeta(){
+            if(window.innerWidth > 768){
+                return true;
+            }else{
+                return false;
+            }
+        },
         actualizar(){
             if(this.campos.nombre != this.datosOriginales.nombre || this.campos.email != this.datosOriginales.email){
                 if(this.invalidos.nombre === false && this.invalidos.email.state === false){
@@ -142,7 +149,6 @@ export default {
 a{
     font-size: 13.5px;
 }
-
 
 
 </style>

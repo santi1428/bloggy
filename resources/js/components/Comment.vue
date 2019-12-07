@@ -1,13 +1,13 @@
 <template>
     <div class="row mt-3">
-        <div class="col-auto pl-3 pr-0 pt-2">
+        <div class="col-auto mr-lg-2 align-self-center">
             <img :src="'/storage/profile_images/' + getUserImage" class="" id="user-img">
         </div>
-        <div class="col-10 pl-2">
+        <div class="col mr-3 p-0">
             <textarea class="form-control" id="comentario" placeholder="Escribe tu comentario aquí" v-model="comment.comment" :disabled="button==1"></textarea>
         </div>
-        <div class="col-auto">
-            <button class="btn" id="boton-comentario" v-on:click="publicarComentario" v-if="button==0" data-toggle="tooltip" data-placement="top" title="Comentar"><i class="fas fa-comment fa-3x text-info"></i></button>
+        <div class="col-auto align-self-center mr-3 p-0 text-center">
+            <button class="btn p-0" id="boton-comentario" v-on:click="publicarComentario" v-if="button==0" data-toggle="tooltip" data-placement="top" title="Comentar"><i class="fas fa-comment fa-3x text-info"></i></button>
             <div class="spinner-border text-info mt-3" v-if="button==1" role="status" id="spinner">
                 <span class="sr-only">Comentando...</span>
             </div>
@@ -20,7 +20,7 @@ import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
 export default {
-    name: "Comentar",
+    name: "Comment",
     props: ["postId"],
     data(){
         return {
@@ -94,5 +94,15 @@ export default {
         width: 2.5rem; 
         height: 2.5rem;
     }
+
+
+    /* @media (min-width: 361px) and (max-width: 380px) {   
+        ul{
+            top: 0%;
+            right: 5%;
+            width: 45%;
+            font-size: 11.4px;
+          }
+    } */
 
 </style>

@@ -3,10 +3,10 @@
  <title>Publicaciones</title>
  <div v-if="loggedIn" class="row justify-content-end mt-4 mb-3">
      <div class="col-auto mr-auto">
-         <filtrar v-on:filtro-cambiado="resetearPaginacionDePosts(); traerPublicaciones();"></filtrar>
+         <filter-posts v-on:filtro-cambiado="resetearPaginacionDePosts(); traerPublicaciones();"></filter-posts>
      </div>
-     <div class="col-auto col-sm-6 col-lg-3">
-            <router-link :to="{name: 'CreatePost'}" id="boton-crear"><i class="fas fa-pen-alt mr-2"></i>Crear publicación</router-link>
+     <div class="col-auto col-sm-6 col-lg-3 mt-2">
+        <router-link :to="{name: 'CreatePost'}" id="boton-crear"><i class="fas fa-pen-alt mr-md-2"></i><span class="d-none d-sm-inline-block">Crear publicación</span></router-link>
      </div>
  </div>
   <div v-else class="row justify-content-center mt-4 mb-3">
@@ -41,6 +41,9 @@
                 <div class="row my-2">
                     <div v-if="loggedIn" class="col-auto">
                         <like :id="post.id" :likes_amount="post.likes_amount"></like>
+                    </div>
+                     <div v-else class="col-auto">
+                        <view-likes :id="post.id" :likes_amount="post.likes_amount"></view-likes>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-comments text-info fa-2x mr-2"></i><span class="text-info font-weight-bold">{{ post.comments_amount }} comentarios</span>
@@ -85,11 +88,16 @@
 
 <script>
 import Option from '../components/Option';
+import ViewLikes from '../components/ViewLikes';
 const DeletePost = () => import('../components/DeletePost');
 import Toast from '../components/Toast';
 import Like from '../components/Like';
+<<<<<<< HEAD
 // import moment from 'moment';
 import Filtrar from '../components/Filtrar';
+=======
+import FilterPosts from '../components/FilterPosts';
+>>>>>>> master
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';
@@ -101,7 +109,8 @@ export default {
         'deletepost': DeletePost,
         'like': Like,
         'toast': Toast,
-        'filtrar': Filtrar
+        'filter-posts': FilterPosts,
+        'view-likes': ViewLikes
     },
     data(){
         return {
@@ -282,6 +291,19 @@ export default {
 
     .fa-comments{
         font-size: 23px;
+    }
+
+    @media (max-width: 576px) {   
+        #boton-crear{
+            padding-left: 12px;
+            padding-right: 12px;
+            padding-top: 12px;
+            padding-bottom: 8px;
+        }
+
+        #boton-crear i{
+            font-size: 20px;
+        }
     }
 
 

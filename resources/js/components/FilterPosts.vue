@@ -17,7 +17,7 @@ import { mapMutations } from 'vuex';
 import { mapGetters } from 'vuex';
 
 export default {
-    name: "Filtrar",
+    name: "FilterPosts",
     data(){
         return {
             filtro: null
