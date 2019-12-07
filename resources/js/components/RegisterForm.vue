@@ -30,9 +30,9 @@
            <button type="submit" class="btn btn-dark btn-block" :disabled="button === 1"><span v-if="button === 1" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span v-if="button === 0"><i class="fas fa-user-plus mr-2"></i>Registrarse</span><span v-else>Registrandose...</span></button>
     </form>
-    <register-modal v-if="mostrarModal" v-bind:modalData="modal"></register-modal>
     </div>
 </div>
+    <register-modal v-if="mostrarModal" v-bind:modalData="modal"></register-modal>
 </div>
 
 </template>
