@@ -10,7 +10,7 @@
                     </h5>
                 </div>
             </div>
-            <div class="row  shadow-sm rounded py-3 mt-md-2" v-else>
+            <div class="row rounded py-3 mt-md-2" v-else>
                 <div class="col">
                         <toast></toast>
                         <div class="row">
@@ -31,15 +31,20 @@
                                 <like :id="post.id" :likes_amount="post.likes_amount"></like>
                             </div>
                         </div>
+                        <div v-else class="row">
+                            <div class="col">
+                                <view-likes :id="post.id" :likes_amount="post.likes_amount"></view-likes>
+                            </div>
+                        </div>
                         <hr>
                         <div class="row justify-content-center">
                             <div class="col">
                                 <h5>Comentarios<span class="badge badge-info ml-2">{{ post.comments_amount }}</span></h5>
                             </div>
                         </div>
-                        <comment v-if="loggedIn" :postId="post.id" v-on:aumentar-comentarios="post.comments_amount++"></comment>
+                        <comment class="mb-4" v-if="loggedIn" :postId="post.id" v-on:aumentar-comentarios="post.comments_amount++"></comment>
                         <div v-else class="row">
-                            <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
+                            <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
                                 <div class="alert alert-info" role="alert">
                                     <router-link :to="{name: 'Login'}" class="alert-link">Inicia sesión </router-link> o <router-link :to="{name: 'Register'}" class="alert-link">registrate </router-link>si no tienes cuenta para comentar o dar like
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -48,7 +53,7 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
+                        <!-- <hr> -->
                         <div v-if="getComments!==null">
                             <div v-for="comment in getComments" :key="comment.id">
                                 <div class="row mt-2 animated fadeIn" id="comment" :class="{'animated fadeOut': comment.id == getMostrarAnimacionEliminarDeComentarioId}">
@@ -104,6 +109,7 @@
 
 <script>
 import Like from '../components/Like';
+import ViewLikes from '../components/ViewLikes';
 import Comment from '../components/Comment';
 import Toast from '../components/Toast';
 import { mapActions } from 'vuex';
@@ -114,7 +120,8 @@ export default {
     components: {
         "like": Like,
         "comment": Comment,
-        "toast": Toast
+        "toast": Toast,
+        "view-likes": ViewLikes
     },
     data(){
         return {

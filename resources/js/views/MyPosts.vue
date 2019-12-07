@@ -5,8 +5,8 @@
      <div class="col-auto mr-auto">
         <filter-posts v-on:filtro-cambiado="resetearPaginacionDePosts(); traerMisPublicaciones();"></filter-posts>
      </div>
-     <div class="col-auto col-sm-6 col-lg-3">
-        <router-link :to="{name: 'CreatePost'}" id="boton-crear"><i class="fas fa-pen-alt mr-2"></i>Crear publicación</router-link>
+     <div class="col-auto col-sm-6 col-lg-3 mt-2">
+        <router-link :to="{name: 'CreatePost'}" id="boton-crear"><i class="fas fa-pen-alt mr-md-2"></i><span class="d-none d-sm-inline-block">Crear publicación</span></router-link>
      </div>
  </div>
  <div v-if="getPosts!==null">
@@ -171,12 +171,6 @@ export default {
         font-size: 1rem;
         transition: 0.2s;
     }
- 
-
-
-    /* .fade {
-      transition: opacity 0.3s linear !important;
-    } */
 
     #boton-crear:hover{
         transition: 0.3s;
@@ -277,15 +271,18 @@ export default {
 
 
 
-    /* @media (max-width: 320px) {   
-        #toast{
-            position: fixed;
-            z-index: 1000;
-            width: 80vw;
-            top: 85vh;
-            right: 10vw;
+    @media (max-width: 576px) {   
+        #boton-crear{
+            padding-left: 12px;
+            padding-right: 12px;
+            padding-top: 12px;
+            padding-bottom: 8px;
         }
-    } */
+
+        #boton-crear i{
+            font-size: 20px;
+        }
+    }
 
     /* @media(min-width: 321px) and (max-width: 360px){
         #toast{
