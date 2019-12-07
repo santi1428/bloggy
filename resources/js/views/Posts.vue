@@ -92,12 +92,7 @@ import ViewLikes from '../components/ViewLikes';
 const DeletePost = () => import('../components/DeletePost');
 import Toast from '../components/Toast';
 import Like from '../components/Like';
-<<<<<<< HEAD
-// import moment from 'moment';
-import Filtrar from '../components/Filtrar';
-=======
 import FilterPosts from '../components/FilterPosts';
->>>>>>> master
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 import { mapMutations } from 'vuex';

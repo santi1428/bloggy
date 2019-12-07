@@ -34,4 +34,5 @@ RUN apt-get update && apt-get upgrade -y
 # CMD php artisan key:generate && php artisan migrate && php artisan passport:install
 RUN apt-get clean && rm -rf /var/lib/apt/lists/
 RUN chown -R www-data:www-data storage/
+RUN chmod 775 -R storage/
 EXPOSE 80

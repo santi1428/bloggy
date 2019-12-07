@@ -109,13 +109,8 @@
 
 <script>
 import Like from '../components/Like';
-<<<<<<< HEAD
-import Comentar from '../components/Comentar';
-// import moment from 'moment';
-=======
 import ViewLikes from '../components/ViewLikes';
 import Comment from '../components/Comment';
->>>>>>> master
 import Toast from '../components/Toast';
 import { mapActions } from 'vuex';
 import { mapGetters } from 'vuex';
