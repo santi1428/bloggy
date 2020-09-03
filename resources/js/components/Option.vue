@@ -106,54 +106,54 @@ export default {
           }
     }
 
-        @media (min-width: 411px) and (max-width: 500px) {   
+    @media (min-width: 411px) and (max-width: 500px) {   
+    ul{
+        top: 0%;
+        right: 5%;
+        width: 38%;
+        font-size: 11.4px;
+        }
+        
+    }
+
+    @media (min-width: 501px) and (max-width: 768px) {   
         ul{
             top: 0%;
-            right: 5%;
-            width: 38%;
+            right: 3%;
+            width: 20%;
             font-size: 11.4px;
-          }
-          
         }
+        
+    }
 
-        @media (min-width: 501px) and (max-width: 768px) {   
-            ul{
-                top: 0%;
-                right: 3%;
-                width: 20%;
-                font-size: 11.4px;
-            }
-          
+    @media (min-width: 769px) and (max-width: 992px) {   
+        ul{
+            top: 0%;
+            right: 3%;
+            width: 20%;
+            font-size: 11.4px;
         }
+        
+    }
 
-        @media (min-width: 769px) and (max-width: 992px) {   
-            ul{
-                top: 0%;
-                right: 3%;
-                width: 20%;
-                font-size: 11.4px;
-            }
-          
+    @media (min-width: 992px) and (max-width: 1200px) {   
+        ul{
+            top: 0%;
+            right: 2%;
+            width: 15%;
+            font-size: 11.4px;
         }
+        
+    }
 
-        @media (min-width: 992px) and (max-width: 1200px) {   
-            ul{
-                top: 0%;
-                right: 2%;
-                width: 15%;
-                font-size: 11.4px;
-            }
-          
+    @media(min-height: 700px) and (max-height: 780px){
+        ul{
+            top: 1%;
+            right: 5%;
+            width: 43%;
+            font-size: 11.8px;
         }
-
-        @media(min-height: 700px) and (max-height: 780px){
-            ul{
-                top: 1%;
-                right: 5%;
-                width: 43%;
-                font-size: 11.8px;
-            }
-        }
+    }
 
 
 
