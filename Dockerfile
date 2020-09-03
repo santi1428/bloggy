@@ -1,8 +1,6 @@
 FROM php:7.2-apache
 WORKDIR /var/www/html/bloggy
-COPY ./ /var/www/html/bloggy 
-COPY .env.example /var/www/html/bloggy
-RUN mv .env.example .env
+COPY . /var/www/html/bloggy 
 COPY laravel.conf /etc/apache2/sites-available/
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
@@ -24,7 +22,7 @@ RUN bash nodesource_setup.sh
 RUN apt-get install nodejs -y
 RUN rm nodesource_setup.sh
 RUN npm install
-RUN npm run production
+RUN npm update
 RUN chown -R www-data:www-data storage/
 RUN chmod 775 -R storage/
 RUN apt-get clean && rm -rf /var/lib/apt/lists/
