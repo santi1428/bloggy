@@ -6,7 +6,7 @@ services:
     restart: always
     image: mysql
     volumes: 
-      - /mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     environment:
       - 'MYSQL_ROOT_PASSWORD=21830818'
       - 'MYSQL_DATABASE=Bloggy'
@@ -26,13 +26,19 @@ services:
     ports:
       - '80:80'
     volumes: 
-      - .:/var/www/html/bloggy
+      - bloggy_files:/var/www/html/bloggy
     command: > 
-      sh -c "php artisan key:generate && ./wait-for-it.sh mysql_db:3306 && 
+      sh -c "./wait-for-it.sh mysql_db:3306 -t 30 && php artisan key:generate && 
       php artisan migrate && php artisan passport:install && 
       npm run production && apachectl -D FOREGROUND"
     networks:
       - app-network
+volumes:
+  mysql_data:
+    driver: local
+  bloggy_files:
+    driver: local
 networks:
   app-network:
     driver: bridge
+
