@@ -31,10 +31,26 @@ services:
       sh -c "apachectl -D FOREGROUND"
     networks:
       - app-network
+  phpmyadmin:
+    container_name: php_my_admin
+    depends_on:
+      - mysql_db
+    image: phpmyadmin:latest
+    ports: 
+      - '8080:80'
+    volumes:
+      - php_my_admin_conf:/etc/phpmyadmin/config.user.inc.php
+    networks: 
+      - app-network
+    environment: 
+      PMA_HOST: mysql_db
+      PMA_PORT: 3306
 volumes:
   mysql_data:
     driver: local
   bloggy_files:
+    driver: local
+  php_my_admin_conf:
     driver: local
 networks:
   app-network:

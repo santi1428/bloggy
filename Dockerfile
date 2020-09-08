@@ -26,6 +26,6 @@ RUN npm update
 RUN chown -R www-data:www-data storage/
 RUN chmod 775 -R storage/
 RUN apt-get clean && rm -rf /var/lib/apt/lists/
-RUN cd /var/www/html/bloggy && php artisan key:generate
+RUN cd /var/www/html/bloggy && php artisan key:generate && php artisan storage:link
 CMD ["apachectl", "-D", "FOREGROUND"]
 EXPOSE 80
