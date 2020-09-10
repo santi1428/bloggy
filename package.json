@@ -30,7 +30,7 @@
         "@ckeditor/ckeditor5-build-classic": "^12.4.0",
         "@ckeditor/ckeditor5-build-decoupled-document": "^12.4.0",
         "@ckeditor/ckeditor5-build-inline": "^12.4.0",
-        "@ckeditor/ckeditor5-vue": "^1.0.1",
+        "@ckeditor/ckeditor5-vue": "^1.0.2",
         "concurrently": "^5.3.0",
         "vue-router": "^3.4.3",
         "vuex": "^3.5.1"

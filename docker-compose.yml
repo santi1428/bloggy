@@ -23,12 +23,19 @@ services:
     links:
       - mysql_db
     build: .
-    ports:
-      - '80:80'
     volumes: 
-      - bloggy_files:/var/www/html/bloggy
-    command: > 
-      sh -c "apachectl -D FOREGROUND"
+      - ./:/var/www/html/bloggy
+    networks:
+      - app-network
+  nginx:
+    image: nginx:alpine
+    container_name: bloggy-nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./:/var/www/html/bloggy
+      - ./nginx:/etc/nginx/conf.d
     networks:
       - app-network
   phpmyadmin:
@@ -48,8 +55,8 @@ services:
 volumes:
   mysql_data:
     driver: local
-  bloggy_files:
-    driver: local
+  # bloggy_files:
+  #   driver: local
   php_my_admin_conf:
     driver: local
 networks:

@@ -1,0 +1,1 @@
+composer install && npm install && npm update && php artisan key:generate && rm -R public/storage && php artisan storage:link && php artisan migrate && php artisan passport:install
