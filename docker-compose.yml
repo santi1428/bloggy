@@ -1,65 +1,62 @@
 version: '3'
-services: 
-  mysql_db: 
+services:
+  mysql_db:
     container_name: mysql_db
-    command: --default-authentication-plugin=mysql_native_password
+    command: '--default-authentication-plugin=mysql_native_password'
     restart: always
     image: mysql
-    volumes: 
-      - mysql_data:/var/lib/mysql
+    volumes:
+      - 'mysql_data:/var/lib/mysql'
     environment:
-      - 'MYSQL_ROOT_PASSWORD=21830818'
-      - 'MYSQL_DATABASE=Bloggy'
-      - 'MYSQL_USER=santi1428'
-      - 'MYSQL_PASSWORD=21830818'
-    ports: 
+      - MYSQL_ROOT_PASSWORD=21830818
+      - MYSQL_DATABASE=Bloggy
+      - MYSQL_USER=santi1428
+      - MYSQL_PASSWORD=21830818
+    ports:
       - '3306:3306'
     networks:
       - app-network
-  app: 
+  app:
     container_name: bloggy_docker_container
     depends_on:
       - mysql_db
     links:
       - mysql_db
     build: .
-    volumes: 
-      - ./:/var/www/html/bloggy
+    volumes:
+      - './:/var/www/html/bloggy'
     networks:
       - app-network
   nginx:
-    image: nginx:alpine
-    container_name: bloggy-nginx
+    image: 'nginx:alpine'
+    container_name: bloggy_nginx
     restart: unless-stopped
     ports:
-      - 80:80
+      - '80:80'
     volumes:
-      - ./:/var/www/html/bloggy
-      - ./nginx:/etc/nginx/conf.d
+      - './:/var/www/html/bloggy'
+      - './nginx:/etc/nginx/conf.d'
     networks:
       - app-network
   phpmyadmin:
     container_name: php_my_admin
     depends_on:
       - mysql_db
-    image: phpmyadmin:latest
-    ports: 
+    image: 'phpmyadmin:latest'
+    ports:
       - '8080:80'
     volumes:
-      - php_my_admin_conf:/etc/phpmyadmin/config.user.inc.php
-    networks: 
+      - 'php_my_admin_conf:/etc/phpmyadmin/config.user.inc.php'
+    networks:
       - app-network
-    environment: 
+    environment:
       PMA_HOST: mysql_db
       PMA_PORT: 3306
 volumes:
   mysql_data:
     driver: local
-  # bloggy_files:
-  #   driver: local
   php_my_admin_conf:
     driver: local
 networks:
   app-network:
     driver: bridge
-
