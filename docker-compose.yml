@@ -29,9 +29,9 @@ services:
     networks:
       - app-network
   nginx:
-    image: 'nginx:alpine'
     container_name: bloggy_nginx
     restart: unless-stopped
+    build: ./nginx
     ports:
       - '80:80'
     volumes:
