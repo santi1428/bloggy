@@ -33,9 +33,11 @@ services:
     build: ./nginx
     ports:
       - '80:80'
+      - '443:443'
     volumes:
       - './:/var/www/html/bloggy'
       - './nginx:/etc/nginx/conf.d'
+      - 'nginx_certificates:/etc/letsencrypt'  
     networks:
       - app-network
   phpmyadmin:
@@ -56,6 +58,8 @@ volumes:
   mysql_data:
     driver: local
   php_my_admin_conf:
+    driver: local
+  nginx_certificates:
     driver: local
 networks:
   app-network:
