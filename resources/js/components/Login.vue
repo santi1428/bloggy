@@ -94,11 +94,10 @@ export default {
         },
         verificarContrasena() {
             if(this.campos.contrasena.length > 0){
-                if(this.campos.contrasena.length < 6){
-                          this.invalidos.contrasena = true;
-                             return "La contraseña debe de tener minimo 6 carácteres.";
+                if(this.campos.contrasena.length <= 1){
+                    this.invalidos.contrasena = true;
                 }else{
-                            this.invalidos.contrasena = false;
+                    this.invalidos.contrasena = false;
                 }
             }
         }
