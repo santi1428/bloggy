@@ -4,7 +4,11 @@
             <div class="row mt-4 justify-content-center">
                 <div class="col-lg-12">
                     <form @submit.prevent="actualizar">
-                        <ckeditor :editor="editor" @ready="onReady" v-model="postData"></ckeditor>
+                        <quill-editor 
+                            v-model="postData"
+                            ref="myQuillEditor"
+                            :options=editorOption
+                        />
                         <div class="custom-control custom-switch my-3">
                             <input type="checkbox" @change="autoActualizar" v-model="switchAutoActualizar" class="custom-control-input" id="switchAutoActualizar">
                             <label class="custom-control-label" for="switchAutoActualizar">Actualizar automaticamente</label>
@@ -17,20 +21,53 @@
 </template>
 
 <script>
-import CKEditor from '@ckeditor/ckeditor5-vue';
-import BuildDocument from '@ckeditor/ckeditor5-build-decoupled-document';
 import { mapActions } from 'vuex';
 import { mapGetters } from 'vuex';
 import { setInterval } from 'timers';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import { quillEditor, Quill } from 'vue-quill-editor';
+import  imageResize from 'quill-image-resize-vue';
+import { ImageDrop } from 'quill-image-drop-module';
+Quill.register("modules/imageResize", imageResize);
+Quill.register("modules/imageDrop", ImageDrop);
+
 
 export default {
     name: 'UpdatePost',
     components: {
-        ckeditor: CKEditor.component
+        "quill-editor": quillEditor
     },
     data() {
         return {
-            editor: BuildDocument,
+            editorOption: {
+                debug: 'info',
+                placeholder: 'Escribe tu publicacion...',
+                readOnly: true,
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        ['blockquote', 'code-block'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'direction': 'rtl' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'align': [] }],
+                        ['clean'],
+                        ['link', 'image', 'video'],
+                        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                        ['blockquote', 'code-block'],
+                        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ],
+                    imageResize: {},
+                    imageDrop: true       
+                }                
+            },
             switchAutoActualizar: false,
             autoActualizarIntervalo: null,
             idPost: null,
@@ -97,8 +134,9 @@ export default {
 </script>
 
 <style scoped>
-.ck-editor__editable {
-    height: 64vh;
+
+.ql-container{
+    height: 70vh !important;
 }
 
 .custom-control-label:before{
