@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::delete("/comments/{comment}", "API\CommentController@destroy")->name("comments.destroy");
 });
 
+Route::post('/recoverpassword', "UserController@recoverPassword");
 Route::get("/posts/filtro/{filtro}", "API\PostController@showPostsByFilter")->name("posts.showPostsByFilter");
 Route::get("/posts/{id}", "API\PostController@show")->name("posts.show");
 Route::get("/comments/{id}", "API\CommentController@index")->name("comments.index");

@@ -1,3 +1,4 @@
+import { stubFalse } from 'lodash';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 const Home = () => import('./views/Home');
@@ -10,6 +11,7 @@ const Post = () => import('./views/Post');
 const UpdatePost = () => import('./components/UpdatePost');
 const Profile = () => import('./views/Profile');
 const MyPosts = () => import('./views/MyPosts');
+const RecoverPassword = () => import('./components/RecoverPassword');
 
 Vue.use(VueRouter);
 
@@ -90,6 +92,14 @@ const router = new VueRouter({
                 requiresAuth: true
             }
         },
+        {
+            path: "/recoverpassword",
+            name: "RecoverPassword",
+            component: RecoverPassword,
+            meta: {
+                requiresAuth: false
+            }
+        }
     ]
 });
 

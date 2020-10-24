@@ -139,5 +139,17 @@ class UserController extends Controller
             
         }
     }
+
+    public function recoverPassword(Request $request){
+        $request->validate(["email" => "email|required"]);
+        $email = $request->input("email");
+        $user = User::where("email", "=", $email)->first();
+        if($user){
+            return response()->json(0);            
+        }else {
+            return response()->json(1);         
+        }
+        
+    }
     
 }

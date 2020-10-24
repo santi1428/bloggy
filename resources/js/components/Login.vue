@@ -26,6 +26,7 @@
                     <div class="invalid-feedback animated fadeIn">{{ verificarContrasena }}</div>
                 </div>
                 <router-link :to="'register'" class="text-danger d-block mb-2">¿No tienes cuenta? Registrate!</router-link>
+                <router-link :to="'recoverpassword'" class="text-danger d-block mb-2">¿Olvidaste tu contraseña?</router-link>
                  <button type="submit" class="btn btn-dark btn-block" :disabled="button === 1 || submit === false"><span v-if="button === 1" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                  <span v-if="button === 0"><i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión</span><span v-else>Iniciando Sesión</span></button>
             </form>
