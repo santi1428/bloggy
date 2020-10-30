@@ -4,6 +4,7 @@ const state = {
     user_image: localStorage.getItem("user_image") || null,
     user_likes: JSON.parse(localStorage.getItem("user_likes")) || null,
     user_name: localStorage.getItem("user_name") || null,
+    user_last_name: localStorage.getItem("user_last_name") || null,
     user_email: localStorage.getItem("user_email") || null,
     mostrarModalActualizarPerfil: false,
     mostrarModalActualizarContrasena: false,
@@ -21,6 +22,7 @@ const getters = {
         }
     },
     getUserName: state => state.user_name,
+    getUserLastName: state => state.user_last_name,
     getUserEmail: state => state.user_email,
     getUserLikes: state => state.user_likes,
     getMostrarModalActualizarPerfil: state => state.mostrarModalActualizarPerfil,
@@ -36,6 +38,9 @@ const mutations = {
     },
     asignarUsuarioNombre(state, user_name){
         state.user_name = user_name;
+    },
+    asignarUsuarioApellido(state, user_last_name){
+        state.user_last_name = user_last_name;
     },
     asignarUsuarioImagen(state, user_image){
         state.user_image = user_image;
@@ -64,6 +69,9 @@ const mutations = {
     destruirUsuarioNombre(state){
         state.user_name = null;
     },
+    destruirUsuarioApellido(state){
+        state.user_last_name = null;
+    },
     destruirUsuarioEmail(state){
         state.user_email = null;
     },
@@ -80,6 +88,8 @@ const actions = {
             localStorage.setItem("access_token", data.access_token);
             commit("asignarUsuarioNombre", data.user_name);
             localStorage.setItem('user_name', data.user_name);
+            commit("asignarUsuarioApellido", data.user_last_name);
+            localStorage.setItem('user_last_name', data.user_last_name);
             commit("asignarUsuarioId", data.user_id);
             localStorage.setItem("user_id", data.user_id);
             commit("asignarUsuarioImagen", data.user_image);
@@ -163,6 +173,8 @@ const actions = {
         commit("destruirUsuarioNombre");
         localStorage.removeItem("user_name");
         commit("destruirUsuarioEmail");
+        localStorage.removeItem("user_last_name");
+        commit("destruirUsuarioApellido");
         localStorage.removeItem("user_email");
         if(localStorage.getItem("access_token")===null &&
            this.getters.getToken===null &&
@@ -174,6 +186,8 @@ const actions = {
            this.getters.getUserLikes === null &&
            localStorage.getItem("user_name") === null &&
            this.getters.getUserName === null &&
+           localStorage.getItem("user_last_name") === null &&
+           this.getters.getUserLastName === null &&
            localStorage.getItem("user_email") === null &&
            this.getters.getUserEmail === null
         ){
@@ -201,6 +215,8 @@ const actions = {
         localStorage.setItem("user_image", datos.image);
         commit('asignarUsuarioNombre', datos.name); 
         localStorage.setItem("user_name", datos.name);  
+        commit('asignarUsuarioApellido', datos.last_name); 
+        localStorage.setItem("user_last_name", datos.last_name);
         commit('asignarUsuarioEmail', datos.email); 
         localStorage.setItem("user_email", datos.email);
         commit("asignarUsuarioLikes", datos.likes);
