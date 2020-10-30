@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RecoverPassword extends Mailable
+class RecoverPasswordEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,9 +16,9 @@ class RecoverPassword extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -28,6 +28,8 @@ class RecoverPassword extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->from('postmaster@sandbox4203d1b2ac3f4b39900b41e15918053b.mailgun.org', 'bloggy')
+        ->subject('Reset your password')
+        ->view('mail.recover_password_mail', ['mailData' => $this->data]);
     }
 }

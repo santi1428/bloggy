@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\Mail\RecoverPasswordEmail;
+use Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
 
@@ -152,11 +154,20 @@ class UserController extends Controller
         $email = $request->input("email");
         $user = User::where("email", "=", $email)->first();
         if($user){
+            $this->sendRecoverPasswordEmail($user);
             return response()->json(0);            
         }else {
             return response()->json(1);         
         }
         
+    }
+
+    public function sendRecoverPasswordEmail($user){
+        $data = [
+            'user_name' => $user->name,
+            'user_last_name' => $user->last_name   
+        ];
+        Mail::to($user->email)->send(new RecoverPasswordEmail($data));
     }
     
 }
