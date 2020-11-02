@@ -85,7 +85,7 @@ export default {
           if(!this.invalidos.correo.state && this.campos.correo.trim().length > 0){
             this.button = 1;
             try{
-              const res = await axios.post("http://localhost/recoverpassword", {"email": this.campos.correo});
+              const res = await axios.post("/recoverpassword", {"email": this.campos.correo});
               console.log(res.data);
               if(res.data == 1){
                   this.showEmailForm = !this.showEmailForm;
@@ -111,7 +111,7 @@ export default {
         this.campos.conContraseña.trim().length >= 6 && this.invalidos.conContraseña.state == false){
           this.button = 1;
           try{
-            const res = await axios.post("http://localhost/resetpassword", {
+            const res = await axios.post("/resetpassword", {
               "email": this.campos.correo,
               "codigo": this.campos.codigo,
               "nuevaContraseña": this.campos.contraseña  
