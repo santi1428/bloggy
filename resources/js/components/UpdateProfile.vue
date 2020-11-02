@@ -54,6 +54,7 @@ export default {
             let perfil = {
                 nombre: this.campos.nombre,
                 email: this.campos.email,
+                apellido: this.campos.apellido,
                 contrasena: this.contrasena
             }
             this.actualizarPerfil(perfil)
@@ -64,9 +65,12 @@ export default {
                 this.asignarDatosToast({msg: "Datos actualizados", clase: "bg-success", icono: "fas fa-check-circle"});
             })
             .catch(err => {
-                console.log(err);
+                if(err.response.status == 422){
+                    this.asignarDatosToast({msg: "No se pudieron actualizar los datos", clase: "bg-danger", icono: "fas fa-times"});
+                }else if(err.response.status == 401){
+                    this.asignarDatosToast({msg: "Contraseña incorrecta", clase: "bg-danger", icono: "fas fa-times"});
+                }
                 this.cerrarModal();
-                this.asignarDatosToast({msg: "Contraseña incorrecta", clase: "bg-danger", icono: "fas fa-times"});
             });
         },
         ...mapActions(["actualizarPerfil", "asignarDatosToast"]),

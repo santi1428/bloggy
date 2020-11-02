@@ -16,6 +16,11 @@
                                 <input type="text" v-model="campos.nombre" class="form-control" v-bind:class="{'is-invalid': this.invalidos.nombre}">
                                 <div class="invalid-feedback">{{verificarNombre}}</div>
                             </div>
+                             <div class="form-group">
+                                <label for="name">Apellido</label>
+                                <input type="text" v-model="campos.apellido" class="form-control" v-bind:class="{'is-invalid': this.invalidos.apellido}">
+                                <div class="invalid-feedback">{{verificarApellido}}</div>
+                            </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" v-model="campos.email" class="form-control" @input="verificarEmail" v-bind:class="{'is-invalid': this.invalidos.email.state}">
@@ -54,15 +59,18 @@ export default {
         return {
             campos: {
                 nombre: "",
+                apellido: "",
                 email: ""
             },
             invalidos: {
                 nombre: false,
+                apellido: false,
                 email: {state: false, msg: ""}
             },
             datosOriginales: {
                 nombre: "",
-                email: ""
+                apellido: "",
+                email: "",
             },
             mostrarModal: false
         }
@@ -98,8 +106,10 @@ export default {
     },
     created(){
             this.datosOriginales.nombre = this.getUserName;
+            this.datosOriginales.apellido = this.getUserLastName;
             this.datosOriginales.email = this.getUserEmail;
             this.campos.nombre = this.getUserName;
+            this.campos.apellido = this.getUserLastName;
             this.campos.email = this.getUserEmail;
     },
     computed: {
@@ -113,6 +123,16 @@ export default {
                 }
             }
         },
+        verificarApellido() {
+            if(this.campos.apellido.length > 0) {
+                if(this.campos.apellido.length < 3){
+                    this.invalidos.apellido = true;
+                    return "Debes de ingresar un apellido válido."
+                }else{ 
+                    this.invalidos.apellido = false;
+                }
+            }
+        },
         mostrarTargeta(){
             if(window.innerWidth > 768){
                 return true;
@@ -121,8 +141,14 @@ export default {
             }
         },
         actualizar(){
-            if(this.campos.nombre != this.datosOriginales.nombre || this.campos.email != this.datosOriginales.email){
-                if(this.invalidos.nombre === false && this.invalidos.email.state === false){
+            if(this.campos.nombre != this.datosOriginales.nombre || this.campos.apellido != this.datosOriginales.apellido || this.campos.email != this.datosOriginales.email){
+                if(this.invalidos.nombre === false && 
+                this.invalidos.apellido === false && 
+                this.invalidos.email.state === false &&
+                this.campos.nombre.length != 0 &&
+                this.campos.apellido.length != 0 &&
+                this.campos.email.length != 0
+                ){
                     return false;
                 }else{
                     return true;
@@ -131,7 +157,7 @@ export default {
                 return true;
             }
         },
-        ...mapGetters(["getMostrarModalActualizarPerfil", "getMostrarModalActualizarContrasena", "getUserName", "getUserEmail"])
+        ...mapGetters(["getMostrarModalActualizarPerfil", "getMostrarModalActualizarContrasena", "getUserName", "getUserEmail", "getUserLastName"])
     }
 
 }

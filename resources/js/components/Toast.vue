@@ -19,9 +19,9 @@ export default {
     #toast{
         position: fixed;
         z-index: 1000;
-        width: 19vw;
-        top: 90vh;
-        left: 25vh;
+        width: auto;
+        top: 85vh;
+        right: 25vh;
     }
 
     #mensajeToast{

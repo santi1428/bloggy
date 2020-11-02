@@ -13,6 +13,11 @@
             <div class="invalid-feedback animated fadeIn">{{ verificarNombre }}</div>
         </div>
         <div class="form-group">
+            <label for="nombre">Apellido</label>
+            <input type="text" name="apellido" v-model="campos.apellido" placeholder="Ingrese su apellido" class="form-control" v-bind:class="{'is-invalid': this.invalidos.apellido}" required>
+            <div class="invalid-feedback animated fadeIn">{{ verificarApellido }}</div>
+        </div>
+        <div class="form-group">
             <label for="correo">Correo</label>
             <input @input="verificarCorreo" type="email" name="correo" v-model="campos.correo" placeholder="Ingrese su correo" class="form-control" v-bind:class="{'is-invalid': this.invalidos.correo.state}" required>
             <div class="invalid-feedback animated fadeIn">{{ invalidos.correo.msg }}</div>
@@ -46,8 +51,8 @@ export default {
     },
     data() {
         return {
-            campos: {nombre: "", correo: "", contrasena: "", concontrasena: ""},
-            invalidos: {nombre: false, correo: {state: false, msg: ""}, contrasena: false, concontrasena: false},
+            campos: {nombre: "", apellido: "", correo: "", contrasena: "", concontrasena: ""},
+            invalidos: {nombre: false, apellido: false, correo: {state: false, msg: ""}, contrasena: false, concontrasena: false},
             modal: {state: false, title: "", body: ""},
             mostrarModal: false,
             button: 0
@@ -55,7 +60,7 @@ export default {
     }, 
     methods: {
         async submit() {
-            if(this.campos.nombre.length > 2 && this.campos.correo.length > 0 && this.campos.contrasena.length > 5 && this.campos.concontrasena.length > 5 && this.invalidos.nombre === false && this.invalidos.correo.state === false && this.invalidos.contrasena === false && this.invalidos.concontrasena === false){
+            if(this.campos.nombre.length > 2 && this.campos.apellido.length > 2 && this.campos.correo.length > 0 && this.campos.contrasena.length > 5 && this.campos.concontrasena.length > 5 && this.invalidos.nombre === false && this.invalidos.correo.state === false && this.invalidos.contrasena === false && this.invalidos.concontrasena === false){
                 this.button = 1;
                 const data = await this.verificarDisponibilidadCorreo();
                 if(data === 1){
@@ -103,6 +108,16 @@ export default {
                     return "Debes de ingresar un nombre válido."
                 }else{ 
                     this.invalidos.nombre = false;
+                }
+            }
+        },
+        verificarApellido() {
+            if(this.campos.apellido.length > 0) {
+                if(this.campos.apellido.length < 3){
+                    this.invalidos.apellido = true;
+                    return "Debes de ingresar un apellido válido."
+                }else{ 
+                    this.invalidos.apellido = false;
                 }
             }
         },

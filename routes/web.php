@@ -22,11 +22,10 @@
 // Route::get("/login", "VueController@index");
 
 Route::get('/{pages}', "VueController@index")
-->where('pages', '(|register|login|posts|logout|posts/create|profile|myposts)');
+->where('pages', '(|register|login|posts|logout|posts/create|profile|myposts|recoverpassword)');
 
 Route::get('posts/{id}', "VueController@index");
 Route::get('posts/update/{id}', "VueController@index");
-
 Route::get("/register/{email}", "UserController@verifyEmail");
 Route::post("/uploadprofileimage", "UserController@uploadProfileImage")->middleware("auth:api");
 Route::post("/register", "UserController@register");
@@ -35,8 +34,14 @@ Route::post("/logout", "UserController@logout")->middleware("auth:api");
 Route::get("/isloggedin", function(){
     return response()->json(["message" => "You are logged in"], 200);
 })->middleware("auth:api");
+// Route::get("/index", function(){
+//     $token = csrf_token();
+//     return response()->json(["csrf_token" => $token]);
+// });
 Route::get("/userdata", "UserController@show")->middleware("auth:api");
 Route::post("/updateuser", "UserController@updateProfile")->middleware("auth:api");
 Route::post("/updatepassword", "UserController@updatePassword")->middleware("auth:api");
 Route::post("/like", "UserController@like")->middleware("auth:api");
 Route::post("/removeLike", "UserController@removeLike")->middleware("auth:api");
+Route::post("/recoverpassword", "UserController@recoverPassword");
+Route::post("/resetpassword", "UserController@resetPassword");
