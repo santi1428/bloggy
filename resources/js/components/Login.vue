@@ -31,6 +31,7 @@
                  <span v-if="button === 0"><i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión</span><span v-else>Iniciando Sesión</span></button>
             </form>
             </div>
+            <toast></toast>
     </div>
 </div>
 </div>
@@ -38,8 +39,13 @@
 
 <script>
 import { mapActions } from 'vuex';
+import Toast from '../components/Toast';
+
 export default {
     name: "Login",
+    components: {
+        "toast": Toast
+    },
     data(){
         return {
             campos: {correo: "", contrasena: ""},

@@ -43,3 +43,5 @@ Route::post("/updateuser", "UserController@updateProfile")->middleware("auth:api
 Route::post("/updatepassword", "UserController@updatePassword")->middleware("auth:api");
 Route::post("/like", "UserController@like")->middleware("auth:api");
 Route::post("/removeLike", "UserController@removeLike")->middleware("auth:api");
+Route::post("/recoverpassword", "UserController@recoverPassword");
+Route::post("/resetpassword", "UserController@resetPassword");

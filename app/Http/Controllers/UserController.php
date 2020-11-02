@@ -150,24 +150,65 @@ class UserController extends Controller
     }
 
     public function recoverPassword(Request $request){
-        $request->validate(["email" => "email|required"]);
+        $request->validate(["email" => "required|email"]);
         $email = $request->input("email");
         $user = User::where("email", "=", $email)->first();
         if($user){
+            $code = $this->generateCode(6);
+            $user->reset_password_code = $code;
+            $user->save();
             $this->sendRecoverPasswordEmail($user);
-            return response()->json(0);            
+            return response()->json(1);            
         }else {
-            return response()->json(1);         
-        }
-        
+            return response()->json(0);         
+        }  
     }
 
     public function sendRecoverPasswordEmail($user){
         $data = [
             'user_name' => $user->name,
-            'user_last_name' => $user->last_name   
+            'reset_password_code' => $user->reset_password_code 
         ];
         Mail::to($user->email)->send(new RecoverPasswordEmail($data));
     }
+
+
+    function generateCode($n) 
+    { 
+        $generatedCode = ""; 
+
+        $domain = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; 
+        
+        $len = strlen($domain); 
+        
+        for ($i = 0; $i < $n; $i++){
+         
+            $index = rand(0, $len - 1); 
+            $generatedCode = $generatedCode . $domain[$index]; 
+        } 
+        
+        return $generatedCode; 
+    } 
+
+    public function resetPassword(Request $request){
+        $request->validate(["codigo" => "required", "email" => "required|email", "nuevaContraseña" => "required"]);           
+        $email = $request->input("email");
+        $user = User::where("email", "=", $email)->first();
+        if($user){
+            $codigo = $request->input("codigo");
+            if($codigo == $user->reset_password_code){
+                $nuevaContraseña = $request->input("nuevaContraseña");
+                $user->password = Hash::make($nuevaContraseña);
+                $user->reset_password_code = $this->generateCode(8);
+                $user->save();
+                return response()->json(1);            
+            }else{
+                return response()->json(0); 
+            }
+        }else{
+            return response()->json([], 400);
+        }
+    }
+  
     
 }

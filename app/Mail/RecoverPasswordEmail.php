@@ -28,8 +28,8 @@ class RecoverPasswordEmail extends Mailable
      */
     public function build()
     {
-        return $this->from('postmaster@sandbox4203d1b2ac3f4b39900b41e15918053b.mailgun.org', 'bloggy')
-        ->subject('Reset your password')
-        ->view('mail.recover_password_mail', ['mailData' => $this->data]);
+        return $this->from('support@bloggyweb.tech', 'bloggy')
+        ->subject('Reestablece tu contraseña')
+        ->markdown('mail.recover_password_mail', ['mailData' => $this->data]);
     }
 }

@@ -1,2 +1,5 @@
-Hola {{ $mailData['user_name'] }}, 
-para reestablecer tu contraseña ingresa el siguiente código -> 5RS24C
+@component('mail::message')
+Hola **{{ $mailData['user_name'] }}**,
+el **código** para reestablecer tu contraseña es: **{{ $mailData['reset_password_code'] }}**
+Gracias por usar nuestro servicio.
+@endcomponent
