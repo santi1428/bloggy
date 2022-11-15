@@ -39,7 +39,7 @@ services:
       - './:/var/www/html/bloggy'
       - './nginx/conf.d:/etc/nginx/conf.d'
       - './nginx/nginx.conf:/etc/nginx/nginx.conf'
-      - 'nginx_certificates:/etc/letsencrypt'  
+      - '/etc/letsencrypt:/etc/letsencrypt'  
     networks:
       - app-network
   phpmyadmin:

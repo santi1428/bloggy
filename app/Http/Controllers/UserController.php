@@ -44,7 +44,7 @@ class UserController extends Controller
     }
 
     public function uploadProfileImage(Request $request){
-        $request->validate(["image" => "image|nullable|max:20480"]);
+        $request->validate(["image" => "required|file|mimes:jpeg,png,jpg,gif,svg|nullable|max:20480"]);
         if($request->hasFile("image")){
             $fileNameWithExt = $request->image->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
